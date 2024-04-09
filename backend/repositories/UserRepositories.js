@@ -35,6 +35,21 @@ async function userLogin(username, password) {
   }
 }
 
+async function getUser(username) {
+  try{
+    const Users = await findUser(username);
+    if(Users == null)
+    {
+      return Error("User Not Found")
+    }
+
+    return {name : Users.name, role : Users.role};
+  }
+  catch (error) {
+    return Error("Unexpected Error");
+  }
+}
+
 async function findUser(name) {
   try{
     const Users = await userData.findOne({"name": name});
@@ -54,5 +69,6 @@ async function findUser(name) {
 
 module.exports = {
   createUser,
-  userLogin
+  userLogin,
+  getUser
 };

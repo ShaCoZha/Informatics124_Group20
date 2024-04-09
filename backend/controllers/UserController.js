@@ -4,11 +4,23 @@ const tokenService = require("../services/TokenService");
 module.exports = {
 
   getUser : async (req, res) => {
-    res.status(201).send(req.user);
+    const user = req.userName;
+
+    result = await userService.getUser(user);
+
+    if (result instanceof Error)
+    {
+      res.status(400).send(result.stack);
+      return;
+    }
+    else
+    {
+      res.status(201).send(result);
+    }
   },
 
   createUser : async (req, res) => {
-    const user = { name: req.body.name, password: req.body.password, role: req.body.role}
+    const user = { name: req.body.name, password: req.body.password, role: req.body.role};
     const result = await userService.createUser(user.name, user.password, user.role);
 
     if (result instanceof Error)
