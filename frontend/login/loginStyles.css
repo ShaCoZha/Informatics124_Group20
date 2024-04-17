@@ -6,10 +6,11 @@ body {
 }
 
 .signIn {
-    
-    background-color: rgba(34, 62, 83, 0.322);
+    width: 30%; 
+    min-width: 300px; 
+    max-width: 400px; 
+    background-color: rgba(139, 139, 139, 0.555);
     text-align: center;
-    width: 20%;
     backdrop-filter: blur(10px);
     padding: 10px;
     border-radius: 10px;
@@ -23,7 +24,7 @@ body {
 
 .word {
     color: #ffffff;
-    font-family: Arial, sans-serif;
+    font-family: "poppins", sans-serif;
 }
 
 .inputBox input {
@@ -36,7 +37,9 @@ body {
 }
 
 .loginButton button{
-    width: 200px; /* Adjust the width as needed */
-    height: 50px; /* Adjust the height as needed */
-    font-size: 16px; /* Adjust the font size as needed */
+    width: 200px;
+    height: 50px;
+    font-size: 16px;
+    border-radius: 30px;
+    border: none;
 }

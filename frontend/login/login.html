@@ -6,7 +6,7 @@
         <link rel="stylesheet" href="loginStyles.css">
         <style>
           body {
-            background-image: url('');
+            background-image: url('https://bpb-us-w2.wpmucdn.com/wp.communications.uci.edu/dist/1/6/files/2021/04/studentcenter_210420-1024x718.jpg');
             background-position: center;
             background-repeat: no-repeat;
             background-size: cover;
@@ -23,16 +23,16 @@
        
              <div class="inputBox"> 
                <br><label class="word"><b>Username</b></label></br>
-               <input type="text" required>
+               <input type="text" id="username" required>
              </div> 
        
              <div class="inputBox"> 
                <br><label class="word"><b>Password</b></label></br>
-              <input type="password" required>
+              <input type="password" id="password" required>
              </div> 
        
              <div class="links"> 
-               <a href="#"><label class= "word">Signup</label></a> 
+               <a href="../register/register.html"><label class= "word">Signup</label></a> 
              </div> 
        
              <div class="loginButton"> 
@@ -43,8 +43,8 @@
        </div> 
     </body>
 
-    
 
-
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.6.8/axios.min.js"></script>
+    <script type = "module" src="login.js"></script>
+  
 </html>
