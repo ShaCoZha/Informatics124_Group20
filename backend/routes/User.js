@@ -4,8 +4,11 @@ const tokenController = require("../controllers/TokenController");
 
 const userController = require("../controllers/UserController");
 
+router.get('/getUserProfile', tokenController.authenticateToken, userController.getUserProfile);
+
 router.post('/login', userController.login);
 router.post('/createUser', userController.createUser);
-router.get('/getUser', tokenController.authenticateToken, userController.getUser);
+router.post('/updateUserProfile', tokenController.authenticateToken, userController.updateUserProfile);
+
 
 module.exports = router;

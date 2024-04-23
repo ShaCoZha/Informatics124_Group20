@@ -3,8 +3,15 @@ const tokenService = require("../services/TokenService");
 
 module.exports = {
 
-  getUser : async (req, res) => {
-    res.status(201).send(req.user);
+  getUserProfile : async (req, res) => {
+    const result = await userService.getUserProfile(req.user.name);
+    if (result instanceof Error)
+    {
+      res.status(401).send(result.stack);
+      return;
+    }
+    res.status(201).send(result);
+    return;
   },
 
   createUser : async (req, res) => {
@@ -38,6 +45,18 @@ module.exports = {
       res.status(201).send(token);
       return;
     }
+  },
+
+  updateUserProfile : async (req, res) => {
+    const user = { displayName: req.body.displayName, year: req.body.year, department: req.body.department, major: req.body.major};
+    const result = await userService.updateUserProfile(req.user.name, user.displayName, user.year, user.department, user.major);
+    if (result instanceof Error)
+    {
+      res.status(401).send(result.stack);
+      return;
+    }
+    res.status(201).send("User profile updated");
+    return;
   }
 
 };

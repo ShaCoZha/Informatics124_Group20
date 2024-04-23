@@ -26,6 +26,7 @@ body, h1, h2, p, ul {
   
   nav li {
     margin-right: 20px;
+    margin: 100px;
   }
   
   nav a {

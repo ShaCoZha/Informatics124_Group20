@@ -11,11 +11,13 @@ async function login() {
     const accessToken = response.data.accessToken;
     const refreshToken = response.data.refreshToken;
 
-    console.log('Access token:', accessToken)
-    console.log('Refresh token:', refreshToken)
+    localStorage.setItem('accessToken', accessToken);
+    localStorage.setItem('refreshToken', refreshToken);
+
+    window.location.href = '../profile/profile.html'
 
   } catch (error) {
-    if (error.response.status === 401) {
+    if (error.response && error.response.status === 401) {
       console.log('Invalid username or password')
     } 
     else {

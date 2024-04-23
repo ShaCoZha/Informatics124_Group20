@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="profileStyles.css">
+        <style>
+          body {
+            background-image: url('https://bpb-us-w2.wpmucdn.com/wp.communications.uci.edu/dist/1/6/files/2021/04/studentcenter_210420-1024x718.jpg');
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+          }
+        </style>
+
+    </head>
+
+    <body>
+        <div class="pic"> 
+        <h1> <a href="#"><img src="https://picsum.photos/400/300" alt="Sample Image"></a></h1>
+        </div>
+
+        <div class="signIn"> 
+            <h2><label class="word">Profile</label></h2> 
+
+            <div class="form"> 
+       
+             <div class="displayField"> 
+               <br><label class="word"><b>Displayname</b></label></br>
+               <span id="displayNameField"></span>
+             </div> 
+
+             <div class="displayField"> 
+              <br><label class="word"><b>Year</b></label></br>
+              <span id="yearField"></span> 
+            </div> 
+
+            <div class="displayField"> 
+              <br><label class="word"><b>Department</b></label></br>
+              <span id="departmentField"></span>
+            </div> 
+
+            <div class="displayField"> 
+              <br><label class="word"><b>Major</b></label></br>
+              <span id="majorField"></span>
+            </div> 
+       
+             <div class="change"> 
+              <button type="submit">Change profile</button>
+             </div> 
+       
+            </div> 
+       </div> 
+    </body>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.6.8/axios.min.js"></script>
+    <script type = "module" src="profile.js"></script>
+  
+</html>

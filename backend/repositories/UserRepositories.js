@@ -1,4 +1,5 @@
 const userData = require("../models/user/userModel");
+const userProfile = require("../models/user/userProfileModel");
 const bcrypt = require('bcryptjs');
 
 async function createUser(name,password,role) {
@@ -7,6 +8,28 @@ async function createUser(name,password,role) {
     const salt = await bcrypt.genSalt();
     const hashedPassword = await bcrypt.hash(password, salt);
     const newUser = await new userData({name : name, password_hash : hashedPassword, salt : salt, role : role}).save();
+    const newUserProfile = await new userProfile({name : name}).save();
+  }
+  catch (error) {
+    return error;
+  }
+}
+
+async function updateUserProfile(name,displayName,year,department,major) {
+  isThereUser = await findUserProfile(name);
+  try
+  {
+    if(isThereUser)
+    {
+      await userProfile.findOneAndUpdate(
+        { name: name },
+        { $set: { displayName: displayName, year: year, department: department, major: major } }
+      );
+    }
+    else
+    {
+      const newUserProfile = await new userProfile({name : name, displayName : displayName, year : year, department : department, major : major}).save();
+    }
   }
   catch (error) {
     return error;
@@ -52,7 +75,26 @@ async function findUser(name) {
   }
 }
 
+async function findUserProfile(name) {
+  try{
+    const Users = await userProfile.findOne({"name": name});
+    if(Users == null)
+    {
+      throw error;
+    }
+    else
+    {
+      return Users;
+    }
+  }
+  catch (error) {
+    return null;
+  }
+}
+
 module.exports = {
   createUser,
-  userLogin
+  userLogin,
+  updateUserProfile,
+  findUserProfile
 };
