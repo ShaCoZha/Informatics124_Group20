@@ -12,6 +12,11 @@ const userDataSchema = mongoose.Schema(
       required: true
     },
 
+    email : {
+      type: String,
+      required: true
+    },
+
     salt : {
       type: String,
       required: true

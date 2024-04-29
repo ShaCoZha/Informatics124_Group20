@@ -1,7 +1,7 @@
 const UserRepositories = require("../repositories/UserRepositories");
 
-async function createUser(name, password, role) {
-    return await UserRepositories.createUser(name,password,role);
+async function createUser(name, email, password, displayName, year, department, major, role) {
+    return await UserRepositories.createUser(name, email, password, displayName, year, department, major, role);
 }
 
 async function updateUserProfile(name, displayName, year, department, major) {

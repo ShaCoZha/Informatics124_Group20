@@ -25,10 +25,15 @@
                <br><label class="word"><b>Username</b></label></br>
                <input type="text" id="username" required>
              </div> 
+
+             <div class="inputBox"> 
+              <br><label class="word"><b>Email</b></label></br>
+             <input type="text" id="email" required>
+            </div> 
        
              <div class="inputBox"> 
                <br><label class="word"><b>Password</b></label></br>
-              <input type="password" id="password" required>
+              <input type="password" id="password" required title="Password must be between 6 to 20 characters long and contain only letters, numbers, underscores, or hyphens">
              </div> 
 
              <div class="inputBox"> 
@@ -36,6 +41,48 @@
              <input type="password" id="confirmPassword" required>
             </div> 
        
+            <div class="inputBox"> 
+              <br><label class="word"><b>Display Name</b></label></br>
+              <input name="text" id="displayName" required>
+            </div> 
+
+            <div class="dropdown"> 
+             <br><label class="word"><b>Year</b></label></br>
+            <select name="text" id="year" required>
+              <option value="Select">Select</option>
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5+">5+</option>
+              <option value="Graduate">Graduate</option>
+            </select>
+           </div> 
+
+           <div class="dropdown"> 
+             <br><label class="word"><b>Department</b></label></br>
+            <select name="text" id="department" required>
+              <option value="Select">Select</option>
+              <option value="Arts">Arts</option>
+              <option value="Biological Sciences">Biological Sciences</option>
+              <option value="Business">Business</option>
+              <option value="Education">Education</option>
+              <option value="Engineering">Engineering</option>
+              <option value="Humanities">Humanities</option>
+              <option value="Information & Computer Sciences">Information & Computer Sciences</option>
+              <option value="Interdisciplinary Studies">Interdisciplinary Studies</option>
+              <option value="Law">Law</option>
+              <option value="Physical Sciences">Physical Sciences</option>
+              <option value="Social Ecology">Social Ecology</option>
+              <option value="Social Sciences">Social Sciences</option>
+            </select>
+           </div> 
+
+           <div class="inputBox"> 
+             <br><label class="word"><b>Major</b></label></br>
+            <input type="text" id="major" required>
+           </div> 
+           
              <div class="links"> 
                <a href="../login/login.html"><label class= "word">Login</label></a> 
              </div> 

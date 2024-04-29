@@ -8,9 +8,7 @@ async function fetchUserProfile() {
   try
   {
     const response = await axiosApiInstance.get('http://localhost:3000/user/getUserProfile', {
-      headers: {
-        authorization: `Bearer ${accessToken}`,
-      }
+      withCredentials: true
     }
     );
 

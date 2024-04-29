@@ -15,8 +15,9 @@ module.exports = {
   },
 
   createUser : async (req, res) => {
-    const user = { name: req.body.name, password: req.body.password, role: req.body.role}
-    const result = await userService.createUser(user.name, user.password, user.role);
+    const user = { name: req.body.name, email: req.body.email, password: req.body.password, displayName : req.body.displayName, 
+      year : req.body.year, department : req.body.department, major : req.body.major, role: req.body.role}
+    const result = await userService.createUser(user.name, user.email, user.password, user.displayName, user.year, user.department, user.major, user.role);
 
     if (result instanceof Error)
     {
@@ -42,7 +43,17 @@ module.exports = {
     const token = await tokenService.claimToken(loginInfo.name)
     if(token)
     {
-      res.status(201).send(token);
+      res.cookie('accessToken', 'Bearer ' + token.accessToken, {
+        httpOnly: true,
+        path: '/'
+      })
+
+      res.cookie('refreshToken', 'Bearer ' + token.refreshToken, {
+        httpOnly: true,
+        path: '/'
+      })
+
+      res.status(201).send("login success")
       return;
     }
   },

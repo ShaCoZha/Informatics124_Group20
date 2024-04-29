@@ -3,14 +3,11 @@ const axiosApiInstance = axios.create();
 setupAxiosInterceptors(axiosApiInstance);
 
 async function fetchUserProfile() {
-  const accessToken = localStorage.getItem('accessToken');
 
   try
   {
     const response = await axiosApiInstance.get('http://localhost:3000/user/getUserProfile', {
-      headers: {
-        authorization: `Bearer ${accessToken}`,
-      }
+      withCredentials: true
     }
     );
 
@@ -27,7 +24,6 @@ async function fetchUserProfile() {
 }
 
 async function changeProfile() {
-  const accessToken = localStorage.getItem('accessToken');
   const displayName = document.getElementById("displayName").value;
   const year = document.getElementById("year").value;
   const department = document.getElementById("department").value;
@@ -41,9 +37,7 @@ async function changeProfile() {
       department: department,
       major: major
     }, {
-      headers: {
-        authorization: `Bearer ${accessToken}`,
-      }
+      withCredentials: true
     }
     );
     window.location.href = "../profile/profile.html";

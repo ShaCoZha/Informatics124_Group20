@@ -28,6 +28,7 @@ body {
 }
 
 .inputBox input {
+    color: white;
     border-radius: 10px;
     background-color: transparent;
     width: 200px;

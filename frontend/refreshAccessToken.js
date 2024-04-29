@@ -1,13 +1,21 @@
-export async function refreshAccessToken(refreshToken) {
+axios.interceptors.request.use(
+  (config) => {
+    config.withCredentials = true
+    return config
+  },
+  (error) => {
+    return Promise.reject(error)
+  }
+)
+
+export async function refreshAccessToken() {
   try {
     const response = await axios.post('http://localhost:3000/token/refreshToken', 
     {
 
     },
     {
-      headers: {
-        authorization: `Bearer ${refreshToken}`,
-      }
+      
     }
     );
 

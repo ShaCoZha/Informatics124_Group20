@@ -33,6 +33,7 @@ body {
 }
 
 .inputBox input {
+  color: white;
   border-radius: 10px;
   background-color: transparent;
   width: 200px;
@@ -66,4 +67,28 @@ body {
 .pic button{
   text-align: center;
   overflow: hidden;
+}
+
+.dropdown{
+  position: relative;
+  overflow: hidden;
+}
+
+select {
+    appearance: none;
+    outline: none;
+    background-color: transparent;
+    width: 200px;
+    height: 30px;
+    color: white;
+    cursor: pointer;
+    border: 1px solid #e4e4e4;
+    border-radius: 10px;
+    padding: 5px;
+    font-size: 16px;
+}
+
+select option {
+    color: black;
+    padding: 10px;
 }

@@ -1,6 +1,6 @@
 import { refreshAccessToken } from '../refreshAccessToken.js';
 
-export function setupAxiosInterceptors(axiosApiInstance)
+export async function setupAxiosInterceptors(axiosApiInstance)
 {
   axiosApiInstance.interceptors.response.use((response) => {
     return response;

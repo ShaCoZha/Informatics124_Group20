@@ -16,10 +16,6 @@
     </head>
 
     <body>
-        <div class="pic"> 
-        <h1> <a href="#"><img src="https://picsum.photos/400/300" alt="Sample Image"></a></h1>
-        <button type="submit">Change profile</button>
-        </div>
 
         <div class="signIn"> 
             <h2><label class="word">Profile</label></h2> 
@@ -31,14 +27,36 @@
                <input type="text" id="displayName" required>
              </div> 
 
-             <div class="inputBox"> 
+             <div class="dropdown"> 
               <br><label class="word"><b>Year</b></label></br>
-             <input type="text" id="year" required>
+             <select name="text" id="year" required>
+               <option value="Select">Select</option>
+               <option value="1">1</option>
+               <option value="2">2</option>
+               <option value="3">3</option>
+               <option value="4">4</option>
+               <option value="5+">5+</option>
+               <option value="Graduate">Graduate</option>
+             </select>
             </div> 
-
-            <div class="inputBox"> 
+ 
+            <div class="dropdown"> 
               <br><label class="word"><b>Department</b></label></br>
-             <input type="text" id="department" required>
+             <select name="text" id="department" required>
+               <option value="Select">Select</option>
+               <option value="Arts">Arts</option>
+               <option value="Biological Sciences">Biological Sciences</option>
+               <option value="Business">Business</option>
+               <option value="Education">Education</option>
+               <option value="Engineering">Engineering</option>
+               <option value="Humanities">Humanities</option>
+               <option value="Information & Computer Sciences">Information & Computer Sciences</option>
+               <option value="Interdisciplinary Studies">Interdisciplinary Studies</option>
+               <option value="Law">Law</option>
+               <option value="Physical Sciences">Physical Sciences</option>
+               <option value="Social Ecology">Social Ecology</option>
+               <option value="Social Sciences">Social Sciences</option>
+             </select>
             </div> 
 
             <div class="inputBox"> 

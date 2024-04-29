@@ -3,7 +3,8 @@ const TokenService = require("../services/TokenService");
 module.exports = {
 
   authenticateToken : async (req, res, next) => {
-    const authHeader = req.headers['authorization']
+
+    const authHeader = req.cookies.accessToken
     const token = authHeader && authHeader.split(' ')[1]
     if(token == null)
     {
@@ -27,7 +28,7 @@ module.exports = {
   },
 
   refreshToken : async (req, res) => {
-    const authHeader = req.headers['authorization']
+    const authHeader = req.cookies.refreshToken
     const token = authHeader && authHeader.split(' ')[1]
     if(token == null)
     {
@@ -43,7 +44,17 @@ module.exports = {
     }
     else
     {
-      res.status(201).send(newAuthToken);
+      res.cookie('accessToken', 'Bearer ' + newAuthToken.accessToken, {
+        httpOnly: true,
+        path: '/'
+      })
+
+      res.cookie('refreshToken', 'Bearer ' + newAuthToken.refreshToken, {
+        httpOnly: true,
+        path: '/'
+      })
+
+      res.status(201).send("login success")
     }
 
   }
