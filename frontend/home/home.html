@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login · ZotPlan</title>
+    <link rel="stylesheet" href="homeStyles.css">
+</head>
+<body>
+    <nav>
+        <img src="anteater.png" alt="College Logo" class="logo">
+        <div class="nav-links">
+            <a href="schedule.html">Course Schedule</a>
+            <a href="chat.html">Chat Room</a>
+            <a href="about.html">About</a>
+        </div>
+        <div class="profile-pic-container">
+            <img src="profile-pic.jpg" alt="Profile" class="profile-pic">
+        </div>
+    </nav>
+
+<div class="welcome-text">
+    <div>Welcome to</div>
+    <div>ZotPlan</div>
+</div>
+
+    <div class="center-container">
+            <div class="signIn"> 
+
+                <div class="inputBox"> 
+                <br><label class="word"><b>Username</b></label></br>
+                <input type="text" id="username" required>
+                </div> 
+        
+                <div class="inputBox"> 
+                <br><label for="password"><b>Password</b></label></br>
+                <input type="password" id="password" required>
+                </div> 
+
+                <div class="loginButton"> 
+                <button type="submit">Login</button>
+                
+                <a href="../register/register.html" class="button-link">
+                    <button id="signup">Signup</button>
+                </a>
+                </div>
+
+            </div>       
+    </div> 
+
+    <footer>
+        <a href="https://www.linkedin.com/in/junzhang0321/" class="linkedin-icon" target="_blank" rel="noopener noreferrer" aria-label="Visit my LinkedIn profile">
+          <span aria-hidden="true" class="fab fa-linkedin"></span>
+        </a>
+        <p>&copy; 2024 by ZotPlan. All Rights Reserved.</p>
+      </footer>
+
+</body>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.6.8/axios.min.js"></script>
+    <script type = "module" src="login.js"></script>
+  
+</html>
