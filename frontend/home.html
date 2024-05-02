@@ -3,49 +3,42 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login · ZotPlan</title>
+    <title>Home · ZotPlan</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <nav>
-        <img src="images/UCI logo.png" alt="College Logo" class="logo">
+        <img src="../frontend/images/UCI logo.png" alt="College Logo" class="logo">
         <div class="nav-links">
             <a href="schedule.html">Course Schedule</a>
-            <a href="chat.html">Chat Room</a>
+            <a href="chatrooms.html">Chat Room</a>
             <a href="about.html">About</a>
         </div>
         <div class="profile-pic-container">
-            <img src="images/profile-pic.jpg" alt="Profile" class="profile-pic">
+            <img src="../frontend/images/profile-pic.JPG" alt="Profile" class="profile-pic">
         </div>
     </nav>
 
     <div class="welcome-text">
-        <div>Welcome to</div>
+        <div>Welcome</div>
+        <div>to</div>
         <div>ZotPlan</div>
     </div>
 
     <div class="center-container">
+
             <div class="signIn"> 
-
-                <div class="inputBox"> 
-                <br><label class="word"><b>Username</b></label></br>
-                <input type="text" id="username" required>
-                </div> 
-        
-                <div class="inputBox"> 
-                <br><label for="password"><b>Password</b></label></br>
-                <input type="password" id="password" required>
-                </div> 
-
-                <div class="loginButton"> 
-                <button type="submit">Login</button>
-                
-                <a href="register/register.html" class="button-link">
-                    <button id="signup">Signup</button>
-                </a>
-                </div>
-
-            </div>       
+                <form action="login/login.html" method="GET">
+                    <div class="loginButton"> 
+                        <button type="submit">Login</button>
+                    </div>
+                </form>  
+                    
+                    <a href="register/register.html" class="button-link">
+                        <button id="signup">Signup</button>
+                    </a>
+            </div>  
+           
     </div> 
 
     <footer>

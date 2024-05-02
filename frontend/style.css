@@ -7,10 +7,12 @@ nav {
 
 }
 
+/* logo size */
 .logo {
     width: 50px;
 }
 
+/* navbar link color&size */
 .nav-links a {
     text-decoration: none;
     color: white;
@@ -18,7 +20,7 @@ nav {
 }
 
 .nav-links a.active {
-    color: rgb(0,100,164);
+    background-color: rgb(0,100,164);
 }
 
 /* rounded profile photo */
@@ -28,11 +30,13 @@ nav {
     overflow: hidden;
 }
 
+/* profile-pic size */
 .profile-pic {
     width: 100%;
     height: auto;
 }
 
+/* footer color */
 footer {
     margin-top: auto;
     background-color: rgb(0,100,164);

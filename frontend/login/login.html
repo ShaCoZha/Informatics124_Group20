@@ -3,45 +3,50 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="loginStyles.css">
-        <style>
-          body {
-            background-image: url('https://news.uci.edu/files/2021/04/studentcenter_210420.jpg');
-            background-position: center;
-            background-repeat: no-repeat;
-            background-size: cover;
-          }
-        </style>
-
+        <link rel="stylesheet" href="../style.css">
     </head>
 
-    <body>
-        <div class="signIn"> 
-            <h2><label class="word">Sign In</label></h2> 
-       
-            <div class="form"> 
-       
-             <div class="inputBox"> 
-               <br><label class="word"><b>Username</b></label></br>
-               <input type="text" id="username" required>
-             </div> 
-       
-             <div class="inputBox"> 
-               <br><label class="word"><b>Password</b></label></br>
-              <input type="password" id="password" required>
-             </div> 
-       
-             <div class="links"> 
-               <a href="../register/register.html"><label class= "word">Signup</label></a> 
-             </div> 
-       
-             <div class="loginButton"> 
-              <button type="submit">Login</button>
-             </div> 
-       
-            </div> 
-       </div> 
-    </body>
+<body>
+  <nav>
+    <img src="../images/UCI logo.png" alt="College Logo" class="logo">
+    <div class="nav-links">
+        <a href="../schedule.html">Course Schedule</a>
+        <a href="../chatrooms.html">Chat Room</a>
+        <a href="../about.html">About</a>
+    </div>
+    <div class="profile-pic-container">
+        <img src="../images/profile-pic.JPG" alt="Profile" class="profile-pic">
+    </div>
+</nav>
+
+<div class="center-container">
+  <div class="signIn"> 
+
+      <div class="form"> 
+  
+        <div class="inputBox"> 
+          <br><label class="word"><b>Username</b></label></br>
+          <input type="text" id="username" required>
+        </div> 
+  
+        <div class="inputBox"> 
+          <br><label class="word"><b>Password</b></label></br>
+        <input type="password" id="password" required>
+        </div> 
+  
+        <div class="loginButton"> 
+        <button type="submit">Login</button>
+        </div> 
+  
+      </div> 
+  </div>
+</div> 
+
+<footer>
+  <p>&copy; 2024 by ZotPlan. All Rights Reserved.</p>
+</footer>
+
+</body>
 
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.6.8/axios.min.js"></script>
