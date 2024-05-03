@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="feedbackStyles.css">
+
+    </head>
+
+    <body>
+
+        <nav>
+            <a href="../home.html"><img src="../images/UCI logo.png" alt="College Logo" class="logo"></a>
+            <div class="nav-links">
+                <a href="../schedule/schedule.html">Course Schedule</a>
+                <a href="../chatrooms.html">Chat Room</a>
+                <a href="../about/about.html">About</a>
+            </div>
+            <div class="profile-pic-container">
+                <a href="../profile/profile.html"><img src="../images/profile-pic.jpg" alt="Profile" class="profile-pic"></a>
+            </div>
+        </nav>  
+
+
+        <div class="feedback"> 
+            <h2><label class="word">Feedback</label></h2> 
+       
+            <div class="form"> 
+       
+             <div class="inputBox"> 
+               <br><label class="word"><b>Name</b></label></br>
+               <input type="text" id="name" required>
+             </div> 
+       
+             <div class="dropdown"> 
+                <br><label class="word"><b>What's your feedback about</b></label></br>
+               <select name="text" id="type" required>
+                 <option value="Select">Select</option>
+                 <option value="Suggestion">Suggestion</option>
+                 <option value="BugReport">Bug Report</option>
+                 <option value="Other">Others</option>
+               </select>
+              </div> 
+
+             <div class="inputArea"> 
+               <br><label class="word"><b>Tell us what can be improved</b></label></br>
+               <textarea id="feedbackBox" rows="4" required></textarea>
+             </div> 
+       
+             <div class="submitButton"> 
+              <button type="submit">Submit</button>
+             </div> 
+       
+            </div> 
+       </div> 
+
+       <footer>
+        <a href="https://www.linkedin.com/in/junzhang0321/" class="linkedin-icon" target="_blank" rel="noopener noreferrer" aria-label="Visit my LinkedIn profile">
+          <span aria-hidden="true" class="fab fa-linkedin"></span>
+        </a>
+        <p>&copy; 2024 by ZotPlan. All Rights Reserved.</p>
+    </footer>
+
+    </body>
+
+    <script type = "module" src="feedback.js"></script>
+  
+</html>

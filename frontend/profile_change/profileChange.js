@@ -6,6 +6,7 @@ async function fetchUserProfile() {
 
   try
   {
+    
     const response = await axiosApiInstance.get('http://localhost:3000/user/getUserProfile', {
       withCredentials: true
     }
@@ -28,6 +29,30 @@ async function changeProfile() {
   const year = document.getElementById("year").value;
   const department = document.getElementById("department").value;
   const major = document.getElementById("major").value;
+
+  if(displayName == "")
+  {
+    window.alert("Please enter a display name");
+      return;
+  }
+
+  if(year == "Select")
+  {
+    window.alert("Please select an option");
+      return;
+  }
+
+  if(department == "Select")
+  {
+    window.alert("Please select an option");
+      return;
+  }
+
+  if(major == "")
+  {
+    window.alert("Please enter an major");
+      return;
+  }
   
   try
   {

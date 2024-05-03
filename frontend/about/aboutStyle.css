@@ -1,0 +1,100 @@
+body {
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    text-align: center;
+    margin: 0px;
+}
+ 
+.about {
+    background-color: #ffffff;
+}
+.about h1 {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+}
+ 
+.about p {
+    font-size: 1rem;
+    color: #323030;
+    max-width: 800px;
+    margin: 0 auto;
+}
+ 
+.about-info {
+    margin: 2rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: left;
+}
+ 
+.about-info p {
+    font-size: 1.3rem;
+    margin: 0 2rem;
+    text-align: justify;
+}
+ 
+button {
+    border: none;
+    outline: 0;
+    padding: 10px;
+    margin: 2rem;
+    font-size: 1rem;
+    color: white;
+    background-color: #3674b7;
+    text-align: center;
+    cursor: pointer;
+    width: 15rem;
+    border-radius: 4px;
+}
+ 
+button:hover {
+    background-color: #051894;
+}
+
+/*nav*/
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    background-color: rgb(0,100,164);
+}
+
+.logo {
+    width: 50px;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: white;
+    margin: 0 10px;
+}
+
+.nav-links a.active {
+    color: rgb(0,100,164);
+}
+
+/* rounded profile photo */
+.profile-pic-container {
+    border-radius: 50%;
+    width: 50px;
+    overflow: hidden;
+}
+
+.profile-pic {
+    width: 100%;
+    height: auto;
+}
+
+footer {
+    margin-top: auto;
+    background-color: rgb(0,100,164);
+    text-align: center;
+    padding: 10px 0;
+}
+
+footer, footer a, footer p {
+    color: white;
+}
