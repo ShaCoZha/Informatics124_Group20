@@ -1,0 +1,15 @@
+footer {
+    font-family: 'Helvetica', sans-serif;
+    color: white;
+    background-color: rgb(0,100,164);
+    margin-top: auto;
+    text-align: center;
+    padding: 10px 0;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+
+footer, footer a, footer p {
+    color: white;
+}

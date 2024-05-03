@@ -1,10 +1,15 @@
 body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-image: url('https://news.uci.edu/files/2021/04/studentcenter_210420.jpg');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  text-align: center;
-  margin: 0px;
-  font-family: Arial, sans-serif;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; /* Ensure can stick to the bottom */
 }
 
 .signIn {
@@ -114,51 +119,18 @@ color: red;
 margin-left:2px
 }
 
-/*nav*/
-nav {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px;
-  background-color: rgb(0,100,164);
+button {
+  color: black;
+  border: none;
+  padding: 10px 20px;
+  margin: 10px;
+  cursor: pointer;
+  width: 200px;
+  height: 50px;
+  font-size: 16px;
+  border-radius: 30px;
 }
 
-.logo {
-  width: 50px;
-}
-
-.nav-links a {
-  text-decoration: none;
-  color: white;
-  margin: 0 10px;
-}
-
-.nav-links a.active {
-  color: rgb(0,100,164);
-}
-
-/* rounded profile photo */
-.profile-pic-container {
-  border-radius: 50%;
-  width: 50px;
-  overflow: hidden;
-}
-
-.profile-pic {
-  width: 100%;
-  height: auto;
-}
-
-footer {
-  position: fixed;
-  bottom: 0;
-  width: 100%;
-  margin-top: auto;
-  background-color: rgb(0,100,164);
-  text-align: center;
-  padding: 10px 0;
-}
-
-footer, footer a, footer p {
-  color: white;
+button:hover {
+  background-color: rgb(197,190,181);
 }
