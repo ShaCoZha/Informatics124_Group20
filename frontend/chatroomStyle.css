@@ -2,9 +2,11 @@ nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 10px;
+    text-align: center;
+    font-family:"poppins", sans-serif;
+    width: 100%;
     background-color: rgb(0,100,164);
-
+    height: 80px;
 }
 
 .logo {
@@ -37,7 +39,11 @@ footer {
     margin-top: auto;
     background-color: rgb(0,100,164);
     text-align: center;
-    padding: 10px 0;
+    width: 100%;
+    font-family:"poppins", sans-serif;
+    justify-content: center;
+    height: 85px;
+    font-size: 16px;
 }
 
 footer, footer a, footer p {
@@ -187,7 +193,7 @@ body .other_container{
 
 .chat_list{
     position: relative;
-    height: calc(100% - 210px);
+    height: calc(100% - 130px);
     overflow-y: auto;
 }
 
@@ -245,11 +251,41 @@ body .other_container{
     background-color: lightgrey;
     height: calc(100vh - 235px);
     width: 100%;
+    overflow-y: scroll;
+}
+.other_container .main_window .text_display::-webkit-scrollbar{
+    display: none;
+}
+
+.message{
+    padding: 0.625em;
+    border-radius: 1em;
+    margin-bottom: 0.625em;
+    display: flex;
+    flex-direction: column;
+    font-family:"poppins", sans-serif;
+    font-size: 20px;
+}
+
+.message-sender{
+    font-weight: bold;
+    margin-bottom: 0.31em;
+}
+
+.message-text{
+    font-size: 1em;
+    margin-bottom: 0.31em;
+    word-wrap: break-word;
+}
+
+.blue-bg{
+    background-color: #6aa2b8;
 }
 
 .other_container .main_window .type_in input{
     background-color: #c6beb5;
-    width: 100%;
+    width: 99.75%;
     height: 93px;
     font-size: 30px;
 }
+
