@@ -13,18 +13,16 @@ body {
 
 .signIn {
   position: relative;
-  width: 30%; 
   min-width: 300px; 
   max-width: 400px; 
   background-color: rgba(139, 139, 139, 0.555);
   text-align: center;
   backdrop-filter: blur(10px);
-  padding: 10px;
+  padding: 20px;
   border-radius: 10px;
   outline-style: inset;
   outline-color: rgba(155, 215, 255, 0.174);
   margin: auto;
-  margin-top: 50px;
 }
 
 .container {
@@ -32,13 +30,21 @@ body {
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  margin-left: 200px;
-  margin-right: 200px; 
+  width: max-content;
+  height: 80vh;
+  margin: 0 auto;
 }
 
 .word {
   color: #ffffff;
   font-family: "poppins", sans-serif;
+}
+
+.pic {
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .pic button{
@@ -47,12 +53,6 @@ body {
   font-size: 16px;
   border-radius: 30px;
   border: none;
-}
-
-.pic {
-  margin-left: 100px;
-  min-width: 200px;
-  position: relative;
 }
 
 .pic img {
@@ -78,14 +78,6 @@ body {
   border-radius: 30px;
   border: none;
   margin-top: 30px;
-}
-
-.pic {
-  margin-right: 100px; /* Adjust the margin-bottom value to add space */
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
 }
 
 .dropdown{

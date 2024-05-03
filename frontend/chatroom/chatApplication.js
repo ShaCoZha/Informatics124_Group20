@@ -1,5 +1,6 @@
 const textDisplay = document.querySelector('.text_display');
 var chatInput = document.getElementById("chat-input");
+var chatBlocks = document.querySelectorAll('.chatblock');
 
 const chatMessage = (message) => `
 <div class = "message blue-bg">
@@ -18,4 +19,18 @@ chatInput.addEventListener("keydown", function(event){
             chatInput.value = "";
         }
     }
+});
+
+const loadTextDisplay = () => {
+    textDisplay.innerHTML = "";
+};
+
+chatBlocks.forEach(chatBlock => {
+    chatBlock.addEventListener('click', () => {
+        chatBlocks.forEach(block => {
+            block.classList.remove('active');
+        });
+        chatBlock.classList.add('active');
+        loadTextDisplay();
+    });
 });

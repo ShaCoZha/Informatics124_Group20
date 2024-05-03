@@ -1,8 +1,8 @@
 document.addEventListener("DOMContentLoaded", function() {
     const pathPrefix = determinePath();
     // Adjust the path to point to the new location of the HTML components
-    loadComponent(pathPrefix + "frontend/global_styles/navbar.html", "navbar");
-    loadComponent(pathPrefix + "frontend/global_styles/footer.html", "footer");
+    loadComponent(pathPrefix + "global_styles/navbar.html", "navbar");
+    loadComponent(pathPrefix + "global_styles/footer.html", "footer");
 });
 
 function determinePath() {

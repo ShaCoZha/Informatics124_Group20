@@ -24,7 +24,7 @@ body {
     outline-style: inset;
     outline-color: rgba(155, 215, 255, 0.174);
     margin: 0 auto;
-    margin-top: 50px;
+    margin-top: 100px;
     margin-bottom: 50px;
 }
 
@@ -71,14 +71,6 @@ select option {
     padding: 10px;
 }
 
-.registerButton button{
-    width: 200px;
-    height: 50px;
-    font-size: 16px;
-    border-radius: 30px;
-    border: none;
-}
-
 .form label::after {
     content: "*";
   color: red;
@@ -89,11 +81,14 @@ select option {
     content: none;
 }
 
+.registerButton {
+    padding: 20px 20px;
+}
+
 button {
     color: black;
     border: none;
     padding: 10px 20px;
-    margin: 10px;
     cursor: pointer;
     width: 200px;
     height: 50px;
