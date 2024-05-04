@@ -4,9 +4,72 @@ document.addEventListener('DOMContentLoaded', function() {
         filters.style.display = (filters.style.display === 'none' || filters.style.display === '') ? 'block' : 'none';
         this.textContent = filters.style.display === 'block' ? 'Hide Filters' : 'Show Filters';
     });
+
+    document.getElementById('addEventsButton').addEventListener('click', function() {
+        const eventForm = document.getElementById('eventForm');
+        eventForm.style.display = (eventForm.style.display === 'none' || eventForm.style.display === '') ? 'block' : 'none';
+    });
+
     fetchAllCoursesData(); // Assuming this function is already defined to populate dropdowns
 });
 
+function addEvent() {
+    const name = document.getElementById('eventName').value;
+    const startTime = document.getElementById('eventStartTime').value;
+    const endTime = document.getElementById('eventEndTime').value;
+    const selectedDays = Array.from(document.querySelectorAll('.day.selected')).map(day => day.textContent.trim());
+    const scheduleTable = document.querySelector('.schedule table');
+    const color = getRandomColor();
+
+    const startMinutes = parseInt(startTime.split(':')[0]) * 60 + parseInt(startTime.split(':')[1]);
+    const endMinutes = parseInt(endTime.split(':')[0]) * 60 + parseInt(endTime.split(':')[1]);
+    const duration = (endMinutes - startMinutes) / 30; // Calculate duration in 30-minute intervals
+
+    selectedDays.forEach(day => {
+        let startRow = Math.floor((startMinutes - 420) / 30); // Calculate start row (420 minutes from 7:00 AM)
+        const dayIndex = getDayIndex(day);
+        const cell = scheduleTable.rows[startRow].cells[dayIndex + 1]; // +1 to adjust for the time label column
+        cell.innerHTML = `<div class="event-content" style="background-color: ${color}; height: ${duration * 20}px;">
+                              <strong>${name}</strong><br>${startTime}-${endTime}
+                              <span class="close-icon" onclick="removeEvent(this, '${color}')">&times;</span>
+                          </div>`;
+        cell.style.position = 'relative';
+        cell.firstChild.style.position = 'absolute';
+        cell.classList.add('event-cell');
+    });
+}
+
+
+function removeEvent(closeIcon, color) {
+    const eventCells = document.querySelectorAll('.event-cell');
+    eventCells.forEach(cell => {
+        const eventContent = cell.querySelector('.event-content');
+        if (eventContent && eventContent.style.backgroundColor === color) {
+            cell.innerHTML = ''; // Clear the cell
+            cell.classList.remove('event-cell');
+        }
+    });
+}
+
+
+function getDayIndex(dayName) {
+    // Map day names to their respective column indices
+    const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'];
+    return days.indexOf(dayName);
+}
+
+function getRandomColor() {
+    const h = Math.floor(Math.random() * 360);
+    const s = 70 + Math.floor(Math.random() * 30); // Keep saturation high
+    const l = 50 + Math.floor(Math.random() * 10); // Keep lightness moderate to avoid too light colors
+    return `hsl(${h}, ${s}%, ${l}%)`;
+}
+
+function toggleDaySelection(element) {
+    element.classList.toggle('selected');
+    element.style.backgroundColor = element.classList.contains('selected') ? '#007bff' : '';
+    element.style.color = element.classList.contains('selected') ? 'white' : '';
+}
 
 async function fetchAllCoursesData() {
     const response = await fetch('https://api.peterportal.org/graphql', {
@@ -109,4 +172,3 @@ function populateDropdown(dropdownId, items) {
         dropdown.appendChild(option);
     });
 }
-

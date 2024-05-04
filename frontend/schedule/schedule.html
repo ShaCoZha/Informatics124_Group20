@@ -15,36 +15,53 @@
             <table>
                 <!-- Generate Time Slots -->
                 <tr>
-                    <th>Sun</th>
+                    <th></th>
                     <th>Mon</th>
                     <th>Tue</th>
                     <th>Wed</th>
                     <th>Thu</th>
                     <th>Fri</th>
-                    <th>Sat</th>
                 </tr>
                 <!-- Repeating Rows for Each Time Slot -->
-                <tr><td>7 AM</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-                <tr><td>8 AM</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-                <tr><td>9 AM</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-                <tr><td>10 AM</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-                <tr><td>11 AM</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-                <tr><td>12 PM</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-                <tr><td>1 PM</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-                <tr><td>2 PM</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-                <tr><td>3 PM</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-                <tr><td>4 PM</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-                <tr><td>5 PM</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-                <tr><td>6 PM</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-                <tr><td>7 PM</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-                <tr><td>8 PM</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-                <tr><td>9 PM</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-                <tr><td>10 PM</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                <tr><td>7 AM</td><td></td><td></td><td></td><td></td><td></td></tr>
+                <tr><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                <tr><td>8 AM</td><td></td><td></td><td></td><td></td><td></td></tr>
+                <tr><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                <tr><td>9 AM</td><td></td><td></td><td></td><td></td><td></td></tr>
+                <tr><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                <tr><td>10 AM</td><td></td><td></td><td></td><td></td><td></td></tr>
+                <tr><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                <tr><td>11 AM</td><td></td><td></td><td></td><td></td><td></td></tr>
+                <tr><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                <tr><td>12 PM</td><td></td><td></td><td></td><td></td><td></td></tr>
+                <tr><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                <tr><td>1 PM</td><td></td><td></td><td></td><td></td><td></td></tr>
+                <tr><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                <tr><td>2 PM</td><td></td><td></td><td></td><td></td><td></td></tr>
+                <tr><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                <tr><td>3 PM</td><td></td><td></td><td></td><td></td><td></td></tr>
+                <tr><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                <tr><td>4 PM</td><td></td><td></td><td></td><td></td><td></td></tr>
+                <tr><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                <tr><td>5 PM</td><td></td><td></td><td></td><td></td><td></td></tr>
+                <tr><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                <tr><td>6 PM</td><td></td><td></td><td></td><td></td><td></td></tr>
+                <tr><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                <tr><td>7 PM</td><td></td><td></td><td></td><td></td><td></td></tr>
+                <tr><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                <tr><td>8 PM</td><td></td><td></td><td></td><td></td><td></td></tr>
+                <tr><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                <tr><td>9 PM</td><td></td><td></td><td></td><td></td><td></td></tr>
+                <tr><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                <tr><td>10 PM</td><td></td><td></td><td></td><td></td><td></td></tr>
+                <tr><td></td><td></td><td></td><td></td><td></td><td></td></tr>
             </table>
         </div>
-        <div class="resizer"></div>
         <div class="class-search">
+            <div class="button-container">
             <button id="toggleFilters">Show Filters</button>
+            </div>
+
             <div id="filters" style="display: none;">
                 <div class="filter-item">
                     <label for="termDropdown">Term</label>
@@ -69,9 +86,41 @@
                     <select id="geDropdown">
                     </select>
                 </div>
+
                 <button id="searchCourses" style="display: none;">Search Courses</button>
             </div>
             <div class="results" id="searchResults"></div>
+
+            <div class="button-container">
+            <button id="addEventsButton">Add Events</button>
+            </div>
+
+            <div id="eventForm" style="display: none;">
+                <div>
+                    <label for="eventName">Event Name</label>
+                    <input type="text" id="eventName" name="eventName" placeholder="Event Name">
+                </div>
+                <div>
+                    <label for="eventStartTime">Start Time</label>
+                    <input type="time" id="eventStartTime" name="eventStartTime" placeholder="Start Time">
+                </div>
+                <div>
+                    <label for="eventEndTime">End Time</label>
+                    <input type="time" id="eventEndTime" name="eventEndTime" placeholder="End Time">
+                </div>
+
+                <div>
+                    <label>Select Days</label>
+                    <div class="days-container">
+                        <div class="day" onclick="toggleDaySelection(this)">Mon</div>
+                        <div class="day" onclick="toggleDaySelection(this)">Tue</div>
+                        <div class="day" onclick="toggleDaySelection(this)">Wed</div>
+                        <div class="day" onclick="toggleDaySelection(this)">Thu</div>
+                        <div class="day" onclick="toggleDaySelection(this)">Fri</div>
+                    </div>
+                </div>
+                <button onclick="addEvent()">Add Event</button>
+            </div>
         </div>
     </div>
     <div id="footer"></div>
