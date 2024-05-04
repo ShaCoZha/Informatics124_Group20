@@ -16,8 +16,6 @@
                 <!-- Generate Time Slots -->
                 <tr>
                     <th>Sun</th>
-                        
-
                     <th>Mon</th>
                     <th>Tue</th>
                     <th>Wed</th>
@@ -44,17 +42,36 @@
                 <tr><td>10 PM</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
             </table>
         </div>
-        <div class="resizer"></div> <!-- Draggable Divider -->
+        <div class="resizer"></div>
         <div class="class-search">
-            <button>Search</button>
-            <button>Course</button>
-            <form>
-                <input type="text" placeholder="Department" name="department">
-                <input type="text" placeholder="Course Code" name="courseCode">
-                <button type="submit">Enter</button>
-            </form>
-            <!-- Display Area for Search Results or Added Courses -->
-            <div class="results"></div>
+            <button id="toggleFilters">Show Filters</button>
+            <div id="filters" style="display: none;">
+                <div class="filter-item">
+                    <label for="termDropdown">Term</label>
+                    <select id="termDropdown">
+                    </select>
+                </div>
+
+                <div class="filter-item">
+                    <label for="departmentDropdown">Department</label>
+                    <select id="departmentDropdown">
+                    </select>
+                </div>
+
+                <div class="filter-item">
+                    <label for="levelDropdown">Course Level</label>
+                    <select id="levelDropdown">
+                    </select>
+                </div>
+
+                <div class="filter-item">
+                    <label for="geDropdown">General Education</label>
+                    <select id="geDropdown">
+                    </select>
+                </div>
+                <button id="searchCourses" style="display: none;">Search Courses</button>
+            </div>
+            <div class="results" id="searchResults"></div>
         </div>
     </div>
     <div id="footer"></div>
