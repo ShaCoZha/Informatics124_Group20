@@ -23,21 +23,34 @@ function addEvent() {
 
     const startMinutes = parseInt(startTime.split(':')[0]) * 60 + parseInt(startTime.split(':')[1]);
     const endMinutes = parseInt(endTime.split(':')[0]) * 60 + parseInt(endTime.split(':')[1]);
-    const duration = (endMinutes - startMinutes) / 30; // Calculate duration in 30-minute intervals
-
+    const durationMinutes = endMinutes - startMinutes;
+    
     selectedDays.forEach(day => {
-        let startRow = Math.floor((startMinutes - 420) / 30); // Calculate start row (420 minutes from 7:00 AM)
         const dayIndex = getDayIndex(day);
-        const cell = scheduleTable.rows[startRow].cells[dayIndex + 1]; // +1 to adjust for the time label column
-        cell.innerHTML = `<div class="event-content" style="background-color: ${color}; height: ${duration * 20}px;">
-                              <strong>${name}</strong><br>${startTime}-${endTime}
-                              <span class="close-icon" onclick="removeEvent(this, '${color}')">&times;</span>
-                          </div>`;
-        cell.style.position = 'relative';
-        cell.firstChild.style.position = 'absolute';
-        cell.classList.add('event-cell');
+        const startRow = Math.floor((startMinutes - 420) / 30); // Convert start time to row index, 420 minutes offset for 7:00 AM start
+        const durationRows = Math.ceil(durationMinutes / 30); // Calculate the number of 30-min rows to span
+
+        if (startRow >= 0 && startRow < scheduleTable.rows.length) {
+            const cell = scheduleTable.rows[startRow].cells[dayIndex + 1]; // +1 to skip the time label column
+            const eventDiv = document.createElement('div');
+            eventDiv.classList.add('event-content');
+            eventDiv.style.backgroundColor = color;
+            eventDiv.style.height = `${durationRows * 50}px`; // Set height based on duration
+            eventDiv.style.borderRadius = '8px'; // Rounded corners
+            eventDiv.style.padding = '5px';
+            eventDiv.style.position = 'absolute';
+            eventDiv.style.width = '100%';
+            eventDiv.innerHTML = `<strong>${name}</strong><br>${startTime}-${endTime}<span class="close-icon" onclick="removeEvent(this, '${color}')">&times;</span>`;
+
+            // Clear any existing content and append new event
+            cell.innerHTML = '';
+            cell.appendChild(eventDiv);
+            cell.style.position = 'relative';
+            cell.style.padding = '0'; // Remove padding to fit event div properly
+        }
     });
 }
+
 
 
 function removeEvent(closeIcon, color) {

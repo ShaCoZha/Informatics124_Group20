@@ -179,3 +179,10 @@ html, body {
     filter: brightness(70%);
 }
 
+.event-content {
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
