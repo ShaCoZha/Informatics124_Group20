@@ -23,8 +23,7 @@ body {
   border-radius: 10px;
   outline-style: inset;
   outline-color: rgba(155, 215, 255, 0.174);
-  margin: 0 auto;
-  margin-top: 300px;
+  margin: auto;
 }
 
 .word {
