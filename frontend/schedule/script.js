@@ -1,17 +1,56 @@
 document.addEventListener('DOMContentLoaded', function() {
+    const resizer = document.querySelector('.resizer');
+    const leftSide = document.querySelector('.schedule');
+    const rightSide = document.querySelector('.class-search');
+    let startX, startWidthLeft, startWidthRight;
+
+    const minLeftWidth = 200;  // Minimum width for the schedule section
+    const minRightWidth = 100; // Minimum width for the class search section
+
+    // Function to start resizing
+    resizer.addEventListener('mousedown', function(e) {
+        startX = e.clientX;
+        startWidthLeft = leftSide.offsetWidth;
+        startWidthRight = rightSide.offsetWidth;
+        document.documentElement.addEventListener('mousemove', doDrag, false);
+        document.documentElement.addEventListener('mouseup', stopDrag, false);
+    });
+
+    // Function to resize the elements
+    function doDrag(e) {
+        const newLeftWidth = startWidthLeft + e.clientX - startX;
+        const newRightWidth = startWidthRight - (e.clientX - startX);
+
+        if (newLeftWidth > minLeftWidth && newRightWidth > minRightWidth) {
+            leftSide.style.width = newLeftWidth + 'px';
+            rightSide.style.width = newRightWidth + 'px';
+        }
+    }
+
+    // Function to stop resizing
+    function stopDrag() {
+        document.documentElement.removeEventListener('mousemove', doDrag, false);
+        document.documentElement.removeEventListener('mouseup', stopDrag, false);
+    }
+
+    // Event listeners for buttons
     document.getElementById('toggleFilters').addEventListener('click', function() {
-        const filters = document.getElementById('filters');
-        filters.style.display = (filters.style.display === 'none' || filters.style.display === '') ? 'block' : 'none';
-        this.textContent = filters.style.display === 'block' ? 'Hide Filters' : 'Show Filters';
+        toggleVisibility('filters');
+        document.getElementById('eventForm').style.display = 'none'; // Close event form when filters are opened
     });
 
     document.getElementById('addEventsButton').addEventListener('click', function() {
-        const eventForm = document.getElementById('eventForm');
-        eventForm.style.display = (eventForm.style.display === 'none' || eventForm.style.display === '') ? 'block' : 'none';
+        toggleVisibility('eventForm');
+        document.getElementById('filters').style.display = 'none'; // Close filters when event form is opened
     });
 
-    fetchAllCoursesData(); // Assuming this function is already defined to populate dropdowns
+    fetchAllCoursesData();
 });
+
+function toggleVisibility(elementId) {
+    const element = document.getElementById(elementId);
+    element.style.display = (element.style.display === 'none' || element.style.display === '') ? 'block' : 'none';
+}
 
 function addEvent() {
     const name = document.getElementById('eventName').value;
