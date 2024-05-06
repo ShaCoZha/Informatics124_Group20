@@ -4,10 +4,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const rightSide = document.querySelector('.class-search');
     let startX, startWidthLeft, startWidthRight;
 
-    const minLeftWidth = 200;  // Minimum width for the schedule section
-    const minRightWidth = 100; // Minimum width for the class search section
-
-    // Function to start resizing
     resizer.addEventListener('mousedown', function(e) {
         startX = e.clientX;
         startWidthLeft = leftSide.offsetWidth;
@@ -16,36 +12,45 @@ document.addEventListener('DOMContentLoaded', function() {
         document.documentElement.addEventListener('mouseup', stopDrag, false);
     });
 
-    // Function to resize the elements
     function doDrag(e) {
         const newLeftWidth = startWidthLeft + e.clientX - startX;
         const newRightWidth = startWidthRight - (e.clientX - startX);
 
-        if (newLeftWidth > minLeftWidth && newRightWidth > minRightWidth) {
+        if (newLeftWidth > 200 && newRightWidth > 200) {
             leftSide.style.width = newLeftWidth + 'px';
             rightSide.style.width = newRightWidth + 'px';
         }
     }
 
-    // Function to stop resizing
     function stopDrag() {
         document.documentElement.removeEventListener('mousemove', doDrag, false);
         document.documentElement.removeEventListener('mouseup', stopDrag, false);
     }
 
-    // Event listeners for buttons
     document.getElementById('toggleFilters').addEventListener('click', function() {
         toggleVisibility('filters');
-        document.getElementById('eventForm').style.display = 'none'; // Close event form when filters are opened
+        document.getElementById('eventForm').style.display = 'none';
     });
 
     document.getElementById('addEventsButton').addEventListener('click', function() {
         toggleVisibility('eventForm');
-        document.getElementById('filters').style.display = 'none'; // Close filters when event form is opened
+        document.getElementById('filters').style.display = 'none';
     });
 
     fetchAllCoursesData();
+    initializeEventListeners();
+
 });
+
+function initializeEventListeners() {
+    // Add event listeners to all current and future close icons within event-content elements
+    document.addEventListener('click', function(e) {
+        if (e.target.classList.contains('close-icon')) {
+            removeEvent(e.target);
+        }
+    });
+}
+
 
 function toggleVisibility(elementId) {
     const element = document.getElementById(elementId);
@@ -66,8 +71,8 @@ function addEvent() {
     
     selectedDays.forEach(day => {
         const dayIndex = getDayIndex(day);
-        const startRow = Math.floor((startMinutes - 420) / 30); // Convert start time to row index, 420 minutes offset for 7:00 AM start
-        const durationRows = Math.ceil(durationMinutes / 30); // Calculate the number of 30-min rows to span
+        const startRow = Math.floor((startMinutes - 390) / 30); // Convert start time to row index, 420 minutes offset for 7:00 AM start
+        const durationRows = Math.ceil(durationMinutes / 60); // Calculate the number of 30-min rows to span
 
         if (startRow >= 0 && startRow < scheduleTable.rows.length) {
             const cell = scheduleTable.rows[startRow].cells[dayIndex + 1]; // +1 to skip the time label column
@@ -90,22 +95,7 @@ function addEvent() {
     });
 }
 
-
-
-function removeEvent(closeIcon, color) {
-    const eventCells = document.querySelectorAll('.event-cell');
-    eventCells.forEach(cell => {
-        const eventContent = cell.querySelector('.event-content');
-        if (eventContent && eventContent.style.backgroundColor === color) {
-            cell.innerHTML = ''; // Clear the cell
-            cell.classList.remove('event-cell');
-        }
-    });
-}
-
-
 function getDayIndex(dayName) {
-    // Map day names to their respective column indices
     const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'];
     return days.indexOf(dayName);
 }
@@ -115,6 +105,16 @@ function getRandomColor() {
     const s = 70 + Math.floor(Math.random() * 30); // Keep saturation high
     const l = 50 + Math.floor(Math.random() * 10); // Keep lightness moderate to avoid too light colors
     return `hsl(${h}, ${s}%, ${l}%)`;
+}
+
+function removeEvent(closeIcon) {
+    const eventColor = closeIcon.parentNode.style.backgroundColor;
+    const eventContents = document.querySelectorAll('.event-content');
+    eventContents.forEach(event => {
+        if (event.style.backgroundColor === eventColor) {
+            event.parentNode.innerHTML = ''; // Clear the cell containing the event
+        }
+    });
 }
 
 function toggleDaySelection(element) {

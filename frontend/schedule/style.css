@@ -9,8 +9,8 @@ html, body {
 
 .container {
     display: flex;
-    height: calc(100% - 20px);
-    padding: 0 5px;
+    height: calc(100% - 55px);
+    padding: 0 5px 5px;
 }
 
 .schedule, .class-search {
@@ -19,8 +19,36 @@ html, body {
     min-width: 200px;
 }
 
+.schedule, .resizer, .class-search {
+    margin-bottom: 5px;
+}
+
 .schedule {
     flex-basis: 50%;
+    display: table;
+    overflow: auto;
+}
+
+.schedule table {
+    width: 100%;
+    table-layout: fixed;
+    border-collapse: collapse;
+}
+
+.schedule th, .schedule td {
+    border: 1px solid #ccc;
+    min-width: 100px;
+    height: calc((100vh - 50px) / 40);
+    text-align: center;
+    vertical-align: middle;
+}
+
+.schedule th:not(:first-child), .schedule td:not(:first-child) {
+    border-left: none;
+}
+
+.schedule th:last-child, .schedule td:last-child {
+    border-right: 1px solid #ccc; 
 }
 
 .resizer {
@@ -29,26 +57,11 @@ html, body {
     background: rgb(0,100,164);
     cursor: ew-resize;
     margin: 0 5px;
+    z-index: 10;
 }
 
 .resizer:hover {
     background-color: #0056b3;
-}
-
-table {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-th, td {
-    border: 1px solid #ddd;
-    padding: 8px;
-    text-align: center;
-    height: 15px;
-}
-
-th {
-    background-color: #f3f3f3;
 }
 
 .schedule table th:first-child, .schedule table td:first-child {
@@ -182,26 +195,64 @@ button {
     color: white;
 }
 
-
 .schedule table tr:nth-child(even) td {
     background-color: #f0f0f0; 
-}
-
-.event-content .close-icon {
-    cursor: pointer;
-    position: absolute;
-    top: 5px;
-    right: 5px;
 }
 
 .close-icon:hover {
     filter: brightness(70%);
 }
 
-.event-content {
+.event-content .close-icon {
+    cursor: pointer;
+    top: 5px;
+    right: 5px;
+}
+
+/* .event-content {
+    color: black;
+    border-radius: 8px;
     overflow: hidden;
     display: flex;
     align-items: center;
     justify-content: center;
+    text-align: center;
+} */
+
+.event-content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 8px;
+    padding: 5px;
+    box-sizing: border-box;
+    overflow: hidden;
+    z-index: 2;
+}
+
+.schedule td {
+    position: relative;
+}
+
+
+.event-name {
+    font-weight: bold; 
+    color: white; 
+    text-align: center; 
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.event-time {
+    font-size: 0.85em;
+    color: white;
     text-align: center;
 }

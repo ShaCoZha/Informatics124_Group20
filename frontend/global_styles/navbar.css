@@ -1,12 +1,13 @@
 nav {
     padding: 10px;
     margin-bottom: 5px;
+    background-color: rgb(0,100,164);
     display: flex;
     justify-content: space-between;
     align-items: center;
     font-family: 'Helvetica', sans-serif;
     color: white;
-    background-color: rgb(0,100,164);
+    height: 50px;
 }
 
 /* logo size */
