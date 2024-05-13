@@ -1,4 +1,4 @@
-import './registerStyle.module.css'
+import  styles from './registerStyle.module.css'
 import React, { useState } from 'react';
 import Header from '../header/header.jsx';
 import Footer from '../footer/footer.jsx';
@@ -10,7 +10,7 @@ function register() {
 
   return (
     
-  <body>
+    <body className={styles.registerBody}>
 
     <Header></Header>
     <RegForm></RegForm>

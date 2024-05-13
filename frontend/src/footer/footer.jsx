@@ -4,7 +4,7 @@ import styles from './footer.module.css'
 const header = ({ }) => {
   
   return (
-    <div class = {styles.footer}>
+    <div className = {styles.footer}>
     <p>Copyright &copy; 2024 by ZotPlan. All Rights Reserved.</p>
     </div>
   );
