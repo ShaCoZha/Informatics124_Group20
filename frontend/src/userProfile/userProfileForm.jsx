@@ -2,14 +2,38 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { ScrollRestoration, useNavigate } from 'react-router-dom';
 import styles from './userProfileFormStyle.module.css';
+const axiosApiInstance = axios.create();
+import { setupAxiosInterceptors } from '../verifyToken.jsx';
+setupAxiosInterceptors(axiosApiInstance);
+
 
 function UserProfileForm() {
+
+  async function fetchUserProfile() {
+    try
+    {
+      const response = await axiosApiInstance.get('http://localhost:3000/user/getUserProfile', {
+        withCredentials: true
+      }
+      );
+  
+      setName(response.data.displayName);
+      setyear(response.data.year);
+      setDepartment(response.data.department);
+      setMajor(response.data.major);
+    }
+    catch(error)
+    {
+      console.log(error)
+    }
+  
+  }
 
     const [name, setName] = useState('s')
     const [year, setyear] = useState('')
     const [department, setDepartment] = useState('')
     const [major, setMajor] = useState('')
-
+    fetchUserProfile();
 
   return (
 
@@ -40,7 +64,7 @@ function UserProfileForm() {
             </div> 
        
              <div className={styles.change}>
-              <a href="../profile_change/profileChange.html" className={styles.buttonLink}>
+              <a href="../userProfileChange" className={styles.buttonLink}>
                 <button type="submit">Change profile</button>
               </a>
              </div> 

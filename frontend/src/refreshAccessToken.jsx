@@ -1,4 +1,4 @@
-import 'axios';
+import axios from 'axios';
 
 axios.interceptors.request.use(
   (config) => {
@@ -14,19 +14,12 @@ export async function refreshAccessToken() {
   try {
     const response = await axios.post('http://localhost:3000/token/refreshToken', 
     {
-
+      withCredentials: true
     },
     {
       
     }
     );
-
-  const newAccessToken = response.data.accessToken;
-  const newRefreshToken = response.data.refreshToken;
-
-  localStorage.setItem('accessToken', newAccessToken);
-  localStorage.setItem('refreshToken', newRefreshToken);
-
   } catch (error) {
     return error;
   }

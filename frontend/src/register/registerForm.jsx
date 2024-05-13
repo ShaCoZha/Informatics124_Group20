@@ -109,42 +109,42 @@ function Register() {
     
   <body>
 
-    <div class={styles.signUp}> 
-            <h2><label class={styles.word}>Sign Up</label></h2> 
+    <div className={styles.signUp}> 
+            <h2><label className={styles.word}>Sign Up</label></h2> 
        
-            <div class={styles.form}> 
+            <div className={styles.form}> 
        
-             <div class={styles.inputBox}> 
-              <label class={styles.word}><b>Username</b></label>
+             <div className={styles.inputBox}> 
+              <label className={styles.word}><b>Username</b></label>
               <input type="text" id={styles.username} value = {username} onChange={(e) => setUsername(e.target.value)} required></input>
              </div> 
 
-             <div class={styles.inputBox}> 
-              <label class={styles.word}><b>Email</b></label>
+             <div className={styles.inputBox}> 
+              <label className={styles.word}><b>Email</b></label>
               <input type="text" id={styles.email} value = {email} onChange={(e) => setEmail(e.target.value)}
                 required></input>
             </div> 
        
-             <div class={styles.inputBox}> 
-               <label class={styles.word}><b>Password</b></label>
+             <div className={styles.inputBox}> 
+               <label className={styles.word}><b>Password</b></label>
               <input type="password" id={styles.password} value = {password} onChange={(e) => setPassword(e.target.value)}
               required title="Password must be between 6 to 20 characters long and contain only letters, numbers, underscores, or hyphens"></input>
              </div> 
 
-             <div class={styles.inputBox}> 
-              <label class={styles.word}><b>Confirm Password</b></label>
+             <div className={styles.inputBox}> 
+              <label className={styles.word}><b>Confirm Password</b></label>
              <input type="password" id={styles.confirmPassword} value = {passwordConf} onChange={(e) => setPasswordConf(e.target.value)}
              required></input>
             </div> 
        
-            <div class={styles.inputBox}> 
-              <label class={styles.word}><b>Name</b></label>
+            <div className={styles.inputBox}> 
+              <label className={styles.word}><b>Name</b></label>
               <input name="text" id={styles.displayName} value = {displayName} onChange={(e) => setDisplayName(e.target.value)}
               required></input>
             </div> 
 
-            <div class={styles.dropdown}> 
-             <label class={styles.word}><b>Year</b></label>
+            <div className={styles.dropdown}> 
+             <label className={styles.word}><b>Year</b></label>
             <select name="text" id={styles.year} value = {year} onChange={(e) => setYear(e.target.value)}
             required>
               <option value={styles.Select}>Select</option>
@@ -157,8 +157,8 @@ function Register() {
             </select>
            </div> 
 
-           <div class={styles.dropdown}> 
-             <label class={styles.word}><b>Department</b></label>
+           <div className={styles.dropdown}> 
+             <label className={styles.word}><b>Department</b></label>
             <select name="text" id={styles.department} value = {department} onChange={(e) => setDepartment(e.target.value)}
             required>
               <option value="Select">Select</option>
@@ -177,14 +177,14 @@ function Register() {
             </select>
            </div> 
 
-           <div class={styles.inputBox}> 
-             <label class={styles.word}><b>Major</b></label>
+           <div className={styles.inputBox}> 
+             <label className={styles.word}><b>Major</b></label>
             <input type="text" id="major" value = {major} onChange={(e) => setMajor(e.target.value)}
             required></input>
            </div> 
            
        
-             <div class={styles.registerButton}> 
+             <div className={styles.registerButton}> 
               <button type={styles.submit} onClick={() => handleRegister()}>Register</button>
              </div> 
        

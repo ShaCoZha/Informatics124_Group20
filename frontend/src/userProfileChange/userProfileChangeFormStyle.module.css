@@ -1,0 +1,77 @@
+.centerContainer {
+  display: flex;            
+  justify-content: center;  
+  align-items: center;      
+  height: 30rem; 
+  width: 30%; 
+  min-width: 300px; 
+  max-width: 400px; 
+  background-color: rgba(139, 139, 139, 0.555);
+  text-align: center;
+  backdrop-filter: blur(10px);
+
+  border-radius: 10px;
+  outline-style: inset;
+  outline-color: rgba(155, 215, 255, 0.174);
+  margin: 0 auto;
+  margin-top: 10rem;
+  margin-bottom: 50px;
+  flex-direction: column;
+
+}
+
+.word {
+  display: block;
+  padding: 0.5rem;
+  color: #ffffff;
+  font-family: "poppins", sans-serif;
+}
+
+.inputBox input {
+  border-radius: 10px;
+  color: white;
+  background-color: transparent;
+  width: 200px;
+  height: 30px;
+  border-color: #e4e4e4;
+  outline: none;
+}
+
+.dropdown{
+  position: relative;
+  overflow: hidden;
+  }
+
+  select option {
+    color: black;
+    padding: 10px;
+  }
+
+  .form label::after {
+    content: "*";
+  color: red;
+  margin-left:2px
+  }
+  
+  .form .links a label::after {
+    content: none;
+  }
+  
+  .change {
+    padding: 20px 20px;
+  }
+
+  button {
+    color: black;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    width: 200px;
+    height: 50px;
+    font-size: 16px;
+    border-radius: 30px;
+  }
+  
+  button:hover {
+    background-color: rgb(197,190,181);
+  }

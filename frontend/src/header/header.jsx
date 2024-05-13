@@ -8,11 +8,11 @@ const header = ({ }) => {
     <nav className={styles.nav}>
     <Link to="/"><img src="/UCI logo.png" alt="College Logo" className={styles.logo}></img></Link>
     <div className={styles.navLinks}>
-        <a href="../schedule/schedule.html">Course Schedule</a>
-        <a href="../chatroom/chatrooms.html">Chat Room</a>
-        <a href="../about/about.html">About</a>
+        <a href="../schedule">Course Schedule</a>
+        <a href="../chatroom">Chat Room</a>
+        <a href="../about">About</a>
     </div>
-    <a href="../profile/profile.html">
+    <a href="../userProfile">
         <div className={styles.profilePicContainer}>
             <img src="/profile-pic.JPG" alt="Profile" className={styles.profilePic}></img>
         </div>

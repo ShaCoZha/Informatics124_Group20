@@ -1,5 +1,5 @@
 import { refreshAccessToken } from './refreshAccessToken.jsx';
-import 'axios';
+import axios from 'axios';
 
 export async function setupAxiosInterceptors(axiosApiInstance)
 {
@@ -10,18 +10,17 @@ export async function setupAxiosInterceptors(axiosApiInstance)
   
       if (error.response.status === 403 && !originalRequest._retry) {
         originalRequest._retry = true;
-        const refreshToken = localStorage.getItem('refreshToken');
-        const refresh = await refreshAccessToken(refreshToken);
+        const refresh = await refreshAccessToken();
   
         if(refresh instanceof Error && refresh.response.status === 403)
         {
-          window.location.href = "../login/login.html";
           window.alert("Your login session has expired. Please log in again.");
+          window.location.href = "./login";
         }
         else
         {
-          window.location.reload();
           window.alert("Session has expired. Undoing changes, please try again");
+          window.location.reload();
           return axiosApiInstance(originalRequest);
         }
       }

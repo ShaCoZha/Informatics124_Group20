@@ -5,6 +5,7 @@ import Home from "./home/home"
 import Login from "./login/login"
 import Register from "./register/register"
 import UserProfile from "./userProfile/userProfile"
+import UserProfileChange from "./userProfileChange/userProfileChange"
 
 function App() {
 
@@ -14,6 +15,7 @@ function App() {
       <Route path="/Login" element={<Login />}/>
       <Route path="/Register" element={<Register />}/>
       <Route path="/userProfile" element={<UserProfile />} />
+      <Route path="/UserProfileChange" element={<UserProfileChange />} />
 
     </Routes>
   )
