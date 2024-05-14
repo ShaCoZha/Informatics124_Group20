@@ -7,6 +7,7 @@ import Register from "./register/register"
 import UserProfile from "./userProfile/userProfile"
 import UserProfileChange from "./userProfileChange/userProfileChange"
 import About from "./about/about"
+import Feedback from "./feedback/feedback"
 
 function App() {
 
@@ -18,6 +19,7 @@ function App() {
       <Route path="/userProfile" element={<UserProfile />} />
       <Route path="/UserProfileChange" element={<UserProfileChange />} />
       <Route path="/about" element={<About />} />
+      <Route path="/Feedback" element={<Feedback />} />
 
     </Routes>
   )
