@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect} from 'react';
 import axios from 'axios';
 import { ScrollRestoration, useNavigate } from 'react-router-dom';
 import styles from './userProfileChangeFormStyle.module.css';
@@ -9,11 +9,81 @@ setupAxiosInterceptors(axiosApiInstance);
 
 function UserProfileChangeForm() {
 
-    const [name, setName] = useState('s')
-    const [year, setyear] = useState('')
+    const navigate = useNavigate();
+    const [name, setName] = useState('')
+    const [year, setYear] = useState('')
     const [department, setDepartment] = useState('')
     const [major, setMajor] = useState('')
 
+    useEffect(() => {
+      async function fetchUserProfile() {
+          try {
+              const response = await axiosApiInstance.get('http://localhost:3000/user/getUserProfile', {
+                  withCredentials: true
+              });
+  
+              setName(response.data.displayName);
+              setYear(response.data.year);
+              setDepartment(response.data.department);
+              setMajor(response.data.major);
+          } catch (error) {
+              console.log(error);
+          }
+      }
+  
+      fetchUserProfile();
+  }, []);
+
+    async function changeProfile() {
+      console.log(name);
+      console.log(year);
+      console.log(department);
+      console.log(major);
+      if(name == "")
+      {
+        window.alert("Please enter a display name");
+          return;
+      }
+    
+      if(year == "Select")
+      {
+        window.alert("Please select a year");
+          return;
+      }
+    
+      if(department == "Select")
+      {
+        window.alert("Please select a department");
+          return;
+      }
+    
+      if(major == "")
+      {
+        window.alert("Please enter an major");
+          return;
+      }
+      
+      try
+      {
+        const response = await axiosApiInstance.post('http://localhost:3000/user/updateUserProfile', {
+          displayName: name,
+          year: year,
+          department: department,
+          major: major
+        }, {
+          withCredentials: true
+        }
+        );
+      }
+      catch(error)
+      {
+        console.log(error)
+      }
+
+      navigate('/userProfile');
+    }
+
+    
   return (
     
       <div className={styles.centerContainer}>
@@ -24,7 +94,7 @@ function UserProfileChangeForm() {
        
              <div className={styles.inputBox}> 
                <label className={styles.word}><b>Name</b></label>
-               <input type="text" id="displayName" required></input>
+               <input type="text" id="displayName" value = {name} onChange={(e) => setName(e.target.value)} required></input>
              </div> 
 
              <div className={styles.dropdown}> 
@@ -63,11 +133,11 @@ function UserProfileChangeForm() {
 
             <div className={styles.inputBox}> 
               <label className={styles.word}><b>Major</b></label>
-             <input type="text" id="major" required></input>
+             <input type="text" id="major" value = {major} required onChange={(e) => setMajor(e.target.value)}></input>
             </div> 
        
              <div className={styles.change}> 
-              <button type="submit">Change profile</button>
+              <button type="submit" onClick={() => changeProfile()}>Change profile</button>
              </div> 
        
             </div> 

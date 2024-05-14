@@ -3,6 +3,7 @@ import Header from '../header/header.jsx';
 import Footer from '../footer/footer.jsx';
 import styles from "./userProfileChangeStyle.module.css"
 import ProfileChangeForm from './userProfileChangeForm.jsx';
+import ProfilePic from './userProfilePic.jsx';
 
 function userProfile() {
 
@@ -11,7 +12,10 @@ function userProfile() {
   <body className={styles.userProfileChangeBody}>
 
     <Header></Header>
-    <ProfileChangeForm></ProfileChangeForm>
+    <body className={styles.centerContent}>
+      <ProfilePic className={styles.picContainer}></ProfilePic>
+      <ProfileChangeForm className={styles.profileContainer}></ProfileChangeForm>
+    </body>
     <Footer></Footer>
     
   </body>

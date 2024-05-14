@@ -29,7 +29,7 @@ function UserProfileForm() {
   
   }
 
-    const [name, setName] = useState('s')
+    const [name, setName] = useState('')
     const [year, setyear] = useState('')
     const [department, setDepartment] = useState('')
     const [major, setMajor] = useState('')

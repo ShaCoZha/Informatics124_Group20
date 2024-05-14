@@ -10,14 +10,6 @@ function Register() {
   const navigate = useNavigate();
 
   const handleRegister = async () => {
-    console.log(username)
-    console.log(email)
-    console.log(password)
-    console.log(passwordConf)
-    console.log(displayName)
-    console.log(year)
-    console.log(department)
-    console.log(major)
     try {
 
       var passwordRegex = /^[a-zA-Z0-9_-]{6,20}$/;

@@ -42,6 +42,11 @@
   overflow: hidden;
   }
 
+.dropdown select {
+  border-radius: 10px;
+  border-color: #e4e4e4;
+}
+
   select option {
     color: black;
     padding: 10px;
