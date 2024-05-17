@@ -10,8 +10,6 @@ function login() {
   const navigate = useNavigate();
 
   const handleLogin = async () => {
-    console.log('Username:', username);
-    console.log('Password:', password);
   
     axios.interceptors.request.use(
       (config) => {
@@ -27,7 +25,12 @@ function login() {
       const response = await axios.post('http://localhost:3000/user/login', {
         name: username,
         password: password
-      });
+      }, {
+        withCredentials: true
+      }
+      );
+
+      navigate('/userProfile')
     } catch (error) {
       if (error.response && error.response.status === 401) {
         window.alert('Invalid username or password')
