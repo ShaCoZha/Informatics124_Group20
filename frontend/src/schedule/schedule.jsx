@@ -165,7 +165,7 @@ const Schedule = () => {
   };
 
   return (
-    <body className={styles.body}>
+    <body className={styles.ScheduleBody}>
         <Header></Header>
         <div className={styles.container}>
         <div className={styles.schedule}>
