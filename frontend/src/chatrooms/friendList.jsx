@@ -20,7 +20,7 @@ function FriendList(){
 
     return (
 
-    <body className = {styles.ChatRooms}>
+    <body className = {styles.side_bar}>
       <div className = {styles.sidebar_search}>
                         <input type = "text" placeholder=" Search Chat" />
                     </div>
