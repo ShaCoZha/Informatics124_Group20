@@ -9,7 +9,7 @@ const header = ({ }) => {
     <Link to="/"><img src="/UCI logo.png" alt="College Logo" className={styles.logo}></img></Link>
     <div className={styles.navLinks}>
         <a href="../schedule">Course Schedule</a>
-        <a href="../chatroom">Chat Room</a>
+        <a href="../chatrooms">Chat Room</a>
         <a href="../about">About</a>
     </div>
     <a href="../userProfile">

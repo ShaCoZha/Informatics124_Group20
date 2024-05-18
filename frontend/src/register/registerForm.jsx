@@ -8,18 +8,14 @@ import styles from './registerFormStyle.module.css';
 
 function Register() {
   const navigate = useNavigate();
-  var passwordRegex = /^[a-zA-Z0-9_-]{6,20}$/;
-  var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
   const handleRegister = async () => {
     try {
 
-      handleUserNameError()
-      handleEmailError()
-      handlePasswordError()
-      handlePasswordConfError()
+      var passwordRegex = /^[a-zA-Z0-9_-]{6,20}$/;
+      var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   
-      if(username==" " || username.length<4)
+      if(username == "")
       {
         window.alert("Please enter a user name");
           return;
@@ -92,51 +88,6 @@ function Register() {
 
   };
 
-  const handleUserNameError = () => {
-    if(username==" " || username.length<4)
-      {
-        setUsernameError('Username needs to be four characters or more');
-      }
-      else
-      {
-        setUsernameError('')
-      }
-  };
-
-  const handleEmailError = () => {
-    if(!emailRegex.test(email))
-      {
-        setEmailError('Invalid email address.');
-      }
-      else
-      {
-        setEmailError('')
-      }
-  };
-
-  const handlePasswordError = () => {
-    if(!passwordRegex.test(password))
-      {
-        setPasswordError('Password must be between 6 to 20 characters long and contain only letters, numbers, underscores, or hyphens.');
-      }
-      else
-      {
-        setPasswordError('')
-      }
-  };
-
-  const handlePasswordConfError = () => {
-    if(password !== 
-      passwordConf)
-      {
-        setPasswordConfError("Passwords don't match.");
-      }
-      else
-      {
-        setPasswordConfError('')
-      }
-  };
-
   const [username, setUsername] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -145,11 +96,6 @@ function Register() {
   const [year, setYear] = useState('')
   const [department, setDepartment] = useState('')
   const [major, setMajor] = useState('')
-
-  const [usernameError, setUsernameError] = useState('')
-  const [emailError, setEmailError] = useState('')
-  const [passwordError, setPasswordError] = useState('')
-  const [passwordConfError, setPasswordConfError] = useState('')
 
   return (
     
@@ -162,63 +108,30 @@ function Register() {
        
              <div className={styles.inputBox}> 
               <label className={styles.word}><b>Username</b></label>
-              <input type="text" 
-              id={styles.username} 
-              placeholder='Username'
-              onFocus={handleUserNameError}
-              value = {username}
-              onChange={(e) => setUsername(e.target.value)} 
-              onKeyUp={handleUserNameError}
-              required></input>
-              {usernameError && <p className={styles.alert}>{usernameError}</p>}
+              <input type="text" id={styles.username} value = {username} onChange={(e) => setUsername(e.target.value)} required></input>
              </div> 
 
              <div className={styles.inputBox}> 
               <label className={styles.word}><b>Email</b></label>
-              <input type="text" 
-              id={styles.email} 
-              placeholder='Email'
-              onFocus={handleEmailError}
-              onKeyUp={handleEmailError}
-              value = {email} 
-              onChange={(e) => setEmail(e.target.value)}
+              <input type="text" id={styles.email} value = {email} onChange={(e) => setEmail(e.target.value)}
                 required></input>
-                {emailError && <p className={styles.alert}>{emailError}</p>}
             </div> 
        
              <div className={styles.inputBox}> 
                <label className={styles.word}><b>Password</b></label>
-              <input type="password" id={styles.password}
-               value = {password} 
-               placeholder='Password'
-               onChange={(e) => setPassword(e.target.value)}
-               onFocus={handlePasswordError}
-              onKeyUp={handlePasswordError}
-              required title="Password must be between 6 to 20 characters long and contain only letters, numbers, underscores, or hyphens">
-              </input>
-              {passwordError && <p className={styles.alert}>{passwordError}</p>}
-             </div>      
+              <input type="password" id={styles.password} value = {password} onChange={(e) => setPassword(e.target.value)}
+              required title="Password must be between 6 to 20 characters long and contain only letters, numbers, underscores, or hyphens"></input>
+             </div> 
 
              <div className={styles.inputBox}> 
               <label className={styles.word}><b>Confirm Password</b></label>
-             <input type="password" 
-             id={styles.confirmPassword} 
-             placeholder='Confirm Password'
-             value = {passwordConf} 
-             onChange={(e) => setPasswordConf(e.target.value)}
-             onFocus={handlePasswordConfError}
-              onKeyUp={handlePasswordConfError}
+             <input type="password" id={styles.confirmPassword} value = {passwordConf} onChange={(e) => setPasswordConf(e.target.value)}
              required></input>
-             {passwordConfError && <p className={styles.alert}>{passwordConfError}</p>}
             </div> 
        
             <div className={styles.inputBox}> 
-              <label className={styles.word}><b>Display Name</b></label>
-              <input name="text" 
-              id={styles.displayName} 
-              value = {displayName} 
-              placeholder='Display Name'
-              onChange={(e) => setDisplayName(e.target.value)}
+              <label className={styles.word}><b>Name</b></label>
+              <input name="text" id={styles.displayName} value = {displayName} onChange={(e) => setDisplayName(e.target.value)}
               required></input>
             </div> 
 
@@ -258,11 +171,7 @@ function Register() {
 
            <div className={styles.inputBox}> 
              <label className={styles.word}><b>Major</b></label>
-            <input type="text" 
-            id="major" 
-            value = {major} 
-            placeholder='Major'
-            onChange={(e) => setMajor(e.target.value)}
+            <input type="text" id="major" value = {major} onChange={(e) => setMajor(e.target.value)}
             required></input>
            </div> 
            
