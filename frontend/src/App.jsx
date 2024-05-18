@@ -9,6 +9,7 @@ import UserProfileChange from "./userProfileChange/userProfileChange"
 import About from "./about/about"
 import Feedback from "./feedback/feedback"
 import Chatrooms from "./chatrooms/chatrooms"
+import Schedule from "./schedule/schedule"
 
 
 function App() {
@@ -23,6 +24,7 @@ function App() {
       <Route path="/about" element={<About />} />
       <Route path="/Feedback" element={<Feedback />} />
       <Route path="/chatrooms" element={<Chatrooms />}/>
+      <Route path="/schedule" element={<Schedule />}/>
 
     </Routes>
   )

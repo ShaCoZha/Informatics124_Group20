@@ -1,0 +1,258 @@
+body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    overflow: hidden;
+    background: #f4f4f4;
+}
+
+.container {
+    display: flex;
+    height: calc(100% - 55px);
+    padding: 0 5px 5px;
+}
+
+.schedule, .class-search {
+    flex-grow: 1;
+    overflow-x: auto; 
+    min-width: 200px;
+}
+
+.schedule, .resizer, .class-search {
+    margin-bottom: 5px;
+}
+
+.schedule {
+    flex-basis: 50%;
+    display: table;
+    overflow: auto;
+}
+
+.schedule table {
+    width: 100%;
+    table-layout: fixed;
+    border-collapse: collapse;
+}
+
+.schedule th, .schedule td {
+    border: 1px solid #ccc;
+    min-width: 100px;
+    height: calc((100vh - 50px) / 40);
+    text-align: center;
+    vertical-align: middle;
+}
+
+.schedule th:not(:first-child), .schedule td:not(:first-child) {
+    border-left: none;
+}
+
+.schedule th:last-child, .schedule td:last-child {
+    border-right: 1px solid #ccc; 
+}
+
+.resizer {
+    flex: none;
+    width: 5px;
+    background: rgb(0,100,164);
+    cursor: ew-resize;
+    margin: 0 5px;
+    z-index: 10;
+}
+
+.resizer:hover {
+    background-color: #0056b3;
+}
+
+.schedule table th:first-child, .schedule table td:first-child {
+    width: 12.5%;
+}
+
+button {
+    flex: 1;
+    margin: 0 10px;
+    cursor: pointer;
+}
+
+.button-container {
+    display: flex;
+    justify-content: space-between;
+    border: 1px solid #f4f4f4;
+    padding: 5px;
+    background-color: #f3f3f3;
+}
+
+#toggleFilters, .button-container button {
+    flex: 1;
+    padding: 10px 20px;
+    border: none;
+    margin: 0 5px;
+    background-color: #f3f3f3;
+    color: #333;
+    outline: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#toggleFilters:hover, .button-container button:hover {
+    background-color: #e1e1e1;
+}
+
+#toggleFilters button, .button-container button {
+    margin-left: 0;
+}
+
+#filters {
+    display: flex;
+    flex-direction: column;
+}
+
+.filter-item {
+    margin-bottom: 10px;
+}
+
+.filter-item select {
+    padding: 10px;
+    margin-top: 5px;
+    width: calc(100% - 20px);
+    cursor: pointer;
+}
+
+.results {
+    margin-top: 20px;
+}
+
+#eventForm {
+    width: 100%;
+    padding: 0 5px;
+}
+
+#eventForm .days-container {
+    width: calc(100% - 20px);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    padding: 5px 0;
+}
+
+#eventForm input[type='text'], #eventForm input[type='time'], #eventForm button {
+    width: calc(100% - 20px);
+    padding: 8px;
+    margin-bottom: 5px;
+    box-sizing: border-box;
+}
+
+#eventForm button {
+    margin-top: 5px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-left: 0;
+}
+
+#eventForm div {
+    margin-bottom: 10px;
+}
+
+#eventForm label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+#eventForm select[multiple] {
+    width: 100%;
+    height: auto;
+    border: 1px solid #ccc;
+}
+
+#eventForm .days-container span {
+    display: inline-block;
+    margin-right: 10px;
+}
+
+.days-container, .day {
+    display: flex;
+    margin-top: 5px;
+    padding: 10px;
+    cursor: pointer;
+}
+
+.day {
+    flex-grow: 1;
+    text-align: center;
+    border-left: 1px solid #ccc;
+    transition: background-color 0.3s;
+}
+
+.day:last-child {
+    border-right: 1px solid #ccc;;
+}
+
+.day:hover, .day.selected {
+    background-color: #007bff;
+    color: white;
+}
+
+.schedule table tr:nth-child(even) td {
+    background-color: #f0f0f0; 
+}
+
+.close-icon:hover {
+    filter: brightness(70%);
+}
+
+.event-content .close-icon {
+    cursor: pointer;
+    top: 5px;
+    right: 5px;
+}
+
+/* .event-content {
+    color: black;
+    border-radius: 8px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+} */
+
+.event-content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 8px;
+    padding: 5px;
+    box-sizing: border-box;
+    overflow: hidden;
+    z-index: 2;
+}
+
+.schedule td {
+    position: relative;
+}
+
+
+.event-name {
+    font-weight: bold; 
+    color: white; 
+    text-align: center; 
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.event-time {
+    font-size: 0.85em;
+    color: white;
+    text-align: center;
+}
