@@ -1,4 +1,4 @@
-ScheduleBody {
+.scheduleBody {
     height: 100%;
     margin: 0;
     padding: 0;
@@ -9,24 +9,20 @@ ScheduleBody {
 
 .container {
     display: flex;
-    height: calc(100% - 55px);
+    flex: 1;
     padding: 0 5px 5px;
 }
 
-.schedule, .class-search {
+.schedule {
     flex-grow: 1;
     overflow-x: auto; 
     min-width: 200px;
-}
-
-.schedule, .resizer, .class-search {
     margin-bottom: 5px;
-}
-
-.schedule {
+    margin-top: 5px;
     flex-basis: 50%;
     display: table;
     overflow: auto;
+    margin-right: 5px;
 }
 
 .schedule table {
@@ -38,9 +34,17 @@ ScheduleBody {
 .schedule th, .schedule td {
     border: 1px solid #ccc;
     min-width: 100px;
-    height: calc((100vh - 50px) / 40);
+    height: calc((100vh - 180px) / 40);
     text-align: center;
     vertical-align: middle;
+}
+
+.schedule td {
+    position: relative;
+}
+
+.schedule table th:first-child, .schedule table td:first-child {
+    width: 12.5%;
 }
 
 .schedule th:not(:first-child), .schedule td:not(:first-child) {
@@ -51,12 +55,17 @@ ScheduleBody {
     border-right: 1px solid #ccc; 
 }
 
+.schedule table tr:nth-child(even) td {
+    background-color: #f0f0f0; 
+}
+
 .resizer {
+    margin-bottom :5px;
     flex: none;
     width: 5px;
     background: rgb(0,100,164);
     cursor: ew-resize;
-    margin: 0 5px;
+    margin-top: 5px;
     z-index: 10;
 }
 
@@ -64,17 +73,16 @@ ScheduleBody {
     background-color: #0056b3;
 }
 
-.schedule table th:first-child, .schedule table td:first-child {
-    width: 12.5%;
+.classSearch {
+    flex-grow: 1;
+    overflow-x: auto; 
+    min-width: 200px;
+    margin-bottom: 5px;
+    margin-top: 5px;
+    padding: 0 5px;
 }
 
-button {
-    flex: 1;
-    margin: 0 10px;
-    cursor: pointer;
-}
-
-.button-container {
+.buttonContainer {
     display: flex;
     justify-content: space-between;
     border: 1px solid #f4f4f4;
@@ -82,7 +90,7 @@ button {
     background-color: #f3f3f3;
 }
 
-#toggleFilters, .button-container button {
+.toggleFilters, .buttonContainer button {
     flex: 1;
     padding: 10px 20px;
     border: none;
@@ -94,40 +102,54 @@ button {
     transition: background-color 0.3s;
 }
 
-#toggleFilters:hover, .button-container button:hover {
+.buttonContainer button:hover {
     background-color: #e1e1e1;
 }
 
-#toggleFilters button, .button-container button {
-    margin-left: 0;
-}
-
-#filters {
+.filters {
     display: flex;
     flex-direction: column;
 }
 
-.filter-item {
+/* .filterItem {
     margin-bottom: 10px;
-}
+} */
 
-.filter-item select {
+.filterItem select {
     padding: 10px;
     margin-top: 5px;
     width: calc(100% - 20px);
     cursor: pointer;
+    outline: 1px solid black;
+    color: black;
+    width: 100%;
+    height: auto;
+    border: 1px solid #ccc;
 }
 
 .results {
     margin-top: 20px;
 }
 
-#eventForm {
-    width: 100%;
-    padding: 0 5px;
+.dropdown {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    border: 1px solid #ccc;
+    max-height: 300px;
+    overflow-y: auto;
 }
 
-#eventForm .days-container {
+.dropdown li {
+    padding: 5px;
+    cursor: pointer;
+}
+
+.dropdown li:hover {
+    background-color: #f0f0f0;
+}
+
+.eventForm .days-container {
     width: calc(100% - 20px);
     display: flex;
     flex-wrap: wrap;
@@ -135,14 +157,14 @@ button {
     padding: 5px 0;
 }
 
-#eventForm input[type='text'], #eventForm input[type='time'], #eventForm button {
+.filterItem select, .eventForm input[type='text'], .eventForm input[type='time'], .eventForm button, .searchContainer input[type='text']  {
     width: calc(100% - 20px);
     padding: 8px;
     margin-bottom: 5px;
     box-sizing: border-box;
 }
 
-#eventForm button {
+.eventForm button {
     margin-top: 5px;
     background-color: #007bff;
     color: white;
@@ -152,27 +174,62 @@ button {
     margin-left: 0;
 }
 
-#eventForm div {
+.eventForm div {
     margin-bottom: 10px;
 }
 
-#eventForm label {
+.eventForm label {
     display: block;
     margin-bottom: 5px;
 }
 
-#eventForm select[multiple] {
+.eventForm select[multiple] {
     width: 100%;
     height: auto;
     border: 1px solid #ccc;
 }
 
-#eventForm .days-container span {
+.eventForm .daysContainer {
     display: inline-block;
     margin-right: 10px;
 }
 
-.days-container, .day {
+.eventContent {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 8px;
+    padding: 5px;
+    box-sizing: border-box;
+    z-index: 2;
+}
+
+.eventContent .close-icon {
+    cursor: pointer;
+    top: 5px;
+    right: 5px;
+}
+
+.closeIcon {
+    filter: brightness(70%);
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    cursor: pointer;
+}
+
+.closeIcon:hover {
+    filter: brightness(70%);
+}
+
+.daysContainer, .day {
     display: flex;
     margin-top: 5px;
     padding: 10px;
@@ -195,64 +252,31 @@ button {
     color: white;
 }
 
-.schedule table tr:nth-child(even) td {
-    background-color: #f0f0f0; 
-}
-
-.close-icon:hover {
-    filter: brightness(70%);
-}
-
-.event-content .close-icon {
-    cursor: pointer;
-    top: 5px;
-    right: 5px;
-}
-
-/* .event-content {
-    color: black;
-    border-radius: 8px;
-    overflow: hidden;
+.days-container {
     display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-} */
+}
 
-.event-content {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    color: white;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    border-radius: 8px;
+.day {
+    margin: 5px;
     padding: 5px;
-    box-sizing: border-box;
-    overflow: hidden;
-    z-index: 2;
+    cursor: pointer;
+    border: 1px solid #ccc;
+    border-radius: 4px;
 }
 
-.schedule td {
-    position: relative;
-}
-
-
-.event-name {
-    font-weight: bold; 
-    color: white; 
-    text-align: center; 
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-}
-
-.event-time {
-    font-size: 0.85em;
+.day.selected {
+    background-color: #007bff;
     color: white;
-    text-align: center;
+}
+
+.addedEventsTable {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+  }
+  
+.addedEventsTable th,
+.addedEventsTable td {
+    padding: 8px;
+    text-align: left;
 }
