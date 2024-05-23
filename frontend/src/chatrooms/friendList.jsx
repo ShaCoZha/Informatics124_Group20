@@ -1,22 +1,10 @@
 import React, { useState } from "react";
 import styles from "./friendListStyle.module.css"
+import CourseList from "./courseChatLists"
 
-function FriendList(){
-
-    const chatRooms = [
-        { name: 'INF 124', imgSrc: '/chatroomone.JPG' },
-        { name: 'ICS 146', imgSrc: '/chatroomtwo.JPG' },
-        { name: 'INF 115', imgSrc: '/chatroomthree.JPG' },
-        { name: 'INF 121', imgSrc: '/chatroomfour.JPG' }
-    ];
+function FriendList( { handleSwitchChat } ){
 
     const [activeChat, setActiveChat ] = useState(0);
-    const [messages, setMessages] = useState([]);
-
-    const handleSwitchChat = (index) => {
-        setActiveChat(index);
-        setMessages([]);
-    };
 
     return (
 
@@ -25,22 +13,7 @@ function FriendList(){
                         <input type = "text" placeholder=" Search Chat" />
                     </div>
                     <div className = { styles.chat_list}>
-                        {chatRooms.map((chat, index) => (
-                            <div
-                                key = {index}
-                                className = {`${styles.chatblock} ${index === activeChat ? styles.active : ''}`}
-                                onClick = {() => handleSwitchChat(index)}
-                            >
-                                <div className = {styles.chat_img}>
-                                    <img src = {chat.imgSrc} className={styles.cover} alt = {chat.name} />
-                                </div>
-                                <div className={styles.chatinfo}>
-                                    <div className = {styles.chatname}>
-                                        <h4>{chat.name}</h4>
-                                    </div>
-                                </div>
-                            </div>
-                        ))}
+                        <CourseList handleSwitchChat={handleSwitchChat}></CourseList>
                     </div>
                     <div className={styles.choice_bar}> 
                         <ul className={styles.chat_sections}>

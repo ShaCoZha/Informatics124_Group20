@@ -1,9 +1,7 @@
 import React, { useState } from "react";
 import styles from "./friendListStyle.module.css"
 
-function ChatWindow(){
-
-  const [messages, setMessages] = useState([]);
+function ChatWindow({ messages, setMessages }){
 
   const handleKeyDown = (event) => {
       if(event.key == 'Enter'){
