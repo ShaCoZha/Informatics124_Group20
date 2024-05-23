@@ -10,8 +10,7 @@ function about() {
     
   <body className={styles.aboutBody}>
 
-    <Header>
-    </Header>
+    <Header></Header>
     <section className={styles.about}>
             <h1>About Us</h1>
             <div className={styles.aboutInfo}>
