@@ -20,6 +20,9 @@ app.use("/user", userRoute);
 const tokenRoute = require("./routes/Token.js");
 app.use("/token", tokenRoute);
 
+const chatRoute = require("./routes/Chat.js");
+app.use("/chat", chatRoute);
+
 app.listen(3000, () => {
   console.log("Listening at port 3000");
 });

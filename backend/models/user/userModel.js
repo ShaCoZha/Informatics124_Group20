@@ -29,8 +29,8 @@ const userDataSchema = mongoose.Schema(
   }
 );
 
-mongoose.connect(process.env.MONGO_DB_SRV + "User");
+const user = mongoose.createConnection(process.env.MONGO_DB_SRV + "User");
 
-const userData = mongoose.model("userData", userDataSchema);
+const userData = user.model("UserData", userDataSchema);
 
 module.exports = userData;

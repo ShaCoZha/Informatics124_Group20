@@ -29,8 +29,8 @@ const userProfileSchema = mongoose.Schema(
   }
 );
 
-mongoose.connect(process.env.MONGO_DB_SRV + "User");
+const user = mongoose.createConnection(process.env.MONGO_DB_SRV + "User");
 
-const userProfile = mongoose.model("UserProfile", userProfileSchema);
+const userProfile = user.model("UserProfile", userProfileSchema);
 
 module.exports = userProfile;
