@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import styles from "./courseChatListsStyles.module.css"
 import ChatWindow from "./chatWindow"
 
-function CourseList( { handleSwitchChat } ){
+function CourseList( { handleSwitchChat, handleChatConnection } ){
 
     const chatRooms = [
         { name: 'INF 124', imgSrc: '/chatroomone.JPG' },
@@ -12,7 +12,7 @@ function CourseList( { handleSwitchChat } ){
         { name: 'INF 123', imgSrc: '/chatroomfour.JPG' }
     ];
 
-    const [activeChat, setActiveChat ] = useState(0);
+    const [activeChat, setActiveChat ] = useState(-1);
 
     return (
 
@@ -21,7 +21,7 @@ function CourseList( { handleSwitchChat } ){
           <div
               key = {chat.name}
               className = {`${styles.chatblock} ${index === activeChat ? styles.active : ''}`}
-              onClick = {() => {handleSwitchChat(), setActiveChat(index), console.log(chat)}}
+              onClick = {() => {handleSwitchChat(), setActiveChat(index), handleChatConnection(chat.name)}}
           >
               <div className = {styles.chat_img}>
                   <img src = {chat.imgSrc} className={styles.cover} alt = {chat.name} />

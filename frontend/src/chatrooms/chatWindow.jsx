@@ -1,14 +1,23 @@
-import React, { useState } from "react";
-import styles from "./friendListStyle.module.css"
+import React, { useState, useEffect } from "react";
+import styles from "./chatWindowStyles.module.css"
 
-function ChatWindow({ messages, setMessages }){
+function ChatWindow({ messages, setMessages, roomId, name, displayName, handleMessageSending }){
 
-  const handleKeyDown = (event) => {
+  const handleKeyDown = async (event) => {
       if(event.key == 'Enter'){
           event.preventDefault();
           const detected_input = event.target.value.trim();
-          if(detected_input != ''){
-              setMessages([...messages, detected_input]);
+          if(detected_input != '' && roomId !== ''){
+              const messageData = {
+                room: roomId,
+                authorId: name,
+                authorDisplayName: displayName,
+                message: detected_input,
+                time: new Date(Date.now())
+              }
+
+              await handleMessageSending(messageData)
+              setMessages([...messages, messageData]);
               event.target.value = '';
           }
       }
@@ -20,8 +29,9 @@ function ChatWindow({ messages, setMessages }){
       <div className = {styles.text_display}>
           {messages.map((msg, index) => (
               <div key = {index} className={`${styles.message} ${styles.blue_bg}`}>
-                  <div className={styles.message_sender}>User</div>
-                  <div className={styles.message_text}>{msg}</div>
+                  <div className={styles.message_sender}>{msg.authorDisplayName}</div>
+                  <div className={styles.message_text}>{msg.message}</div>
+                  
               </div>
           ))}
       </div>

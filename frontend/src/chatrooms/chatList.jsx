@@ -1,10 +1,8 @@
 import React, { useState } from "react";
-import styles from "./friendListStyle.module.css"
+import styles from "./chatListStyle.module.css"
 import CourseList from "./courseChatLists"
 
-function FriendList( { handleSwitchChat } ){
-
-    const [activeChat, setActiveChat ] = useState(0);
+function FriendList( { handleSwitchChat, handleChatConnection} ){
 
     return (
 
@@ -13,7 +11,7 @@ function FriendList( { handleSwitchChat } ){
                         <input type = "text" placeholder=" Search Chat" />
                     </div>
                     <div className = { styles.chat_list}>
-                        <CourseList handleSwitchChat={handleSwitchChat}></CourseList>
+                        <CourseList handleSwitchChat={handleSwitchChat} handleChatConnection={handleChatConnection}></CourseList>
                     </div>
                     <div className={styles.choice_bar}> 
                         <ul className={styles.chat_sections}>
