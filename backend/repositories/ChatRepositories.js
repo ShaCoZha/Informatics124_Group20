@@ -3,7 +3,7 @@ const groupChatListData = require("../models/chat/groupChatListModel");
 
 async function findGroupChat(chatRoomId) {
     try{
-        const groupChat = await groupChatData.findOne({"chatId": chatRoomId});
+        const groupChat = await groupChatData.findOne({"roomId": chatRoomId});
         if(groupChat == null)
         {
           return null;
@@ -16,6 +16,25 @@ async function findGroupChat(chatRoomId) {
       catch (error) {
         return error;
       }
+}
+
+async function getChatRoomInPage(page, offset) {
+  if(page < 1)
+  {
+    page = 1;
+  }
+
+  const startIndex = (page - 1) * offset;
+  const endIndex = startIndex + offset;
+
+  try{
+      const allRoom = await groupChatListData.findOne({"_id": "66526e69857ebc0264814d6a"});
+      const roomsInPage = allRoom.groupChatList.slice(startIndex, endIndex);
+      return roomsInPage;
+    }
+    catch (error) {
+      return error;
+    }
 }
 
 async function getGroupChat(chatRoomId) {
@@ -23,7 +42,20 @@ async function getGroupChat(chatRoomId) {
         const groupChat = await findGroupChat(chatRoomId);
         if(groupChat == null)
         {
-          return null;
+            const allRoom = await groupChatListData.findOne({"_id": "66526e69857ebc0264814d6a"});
+            if(allRoom.groupChatList.includes(chatRoomId))
+            {
+              const newChatRoom = await new groupChatData(
+                { roomId: chatRoomId },
+                { chatRoom: [] }
+              ).save();
+            }
+            else
+            {
+              const error = new Error('Chat room does not exist');
+              error.statusCode = 404;
+              throw error;
+            }
         }
         else
         {
@@ -35,23 +67,42 @@ async function getGroupChat(chatRoomId) {
       }
 }
 
-async function saveGroupChat(chatRoomId) {
-    try{
-        const groupChat = await groupChatListData.findOne({"_id": "664fae72861d563a17d0627b"});
-        if(groupChat.groupChatList.includes(chatRoomId))
-        {
-            console.log(true)
-        }
-        else
-        {
-            console.log(false)
-        }
+async function saveGroupChat(roomId, messages) {
+  isThereRoom = await findGroupChat(roomId);
+  try
+  {
+    if(isThereRoom)
+    {
+      await groupChatData.findOneAndUpdate(
+        { roomId: roomId },
+        { $push: { messages: { $each: messages } } }
+      );
+    }
+    else
+    {
+      const allRoom = await groupChatListData.findOne({"_id": "66526e69857ebc0264814d6a"});
+      if(allRoom.groupChatList.includes(roomId))
+      {
+        const newChatRoom = await new groupChatData(
+          { roomId: roomId },
+          { $push: { messages: { $each: messages } } }
+        ).save();
       }
-      catch (error) {
+      else
+      {
+        const error = new Error('Chat room does not exist');
+        error.statusCode = 404;
+        throw error;
       }
+    }
+  }
+  catch (error) {
+    return error;
+  }
 }
 
 module.exports = {
     getGroupChat,
-    saveGroupChat
+    saveGroupChat,
+    getChatRoomInPage
 };

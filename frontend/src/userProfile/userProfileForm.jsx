@@ -8,6 +8,7 @@ setupAxiosInterceptors(axiosApiInstance);
 
 
 function UserProfileForm() {
+  const navigate = useNavigate();
 
   async function fetchUserProfile() {
     try
@@ -24,7 +25,7 @@ function UserProfileForm() {
     }
     catch(error)
     {
-      console.log(error)
+      navigate('/login');
     }
   
   }

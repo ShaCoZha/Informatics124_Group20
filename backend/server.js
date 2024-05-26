@@ -20,8 +20,7 @@ app.use(cookieParser());
 const httpServer = createServer(app);
 const io = new Server(httpServer, {
   cors: {
-    origin: "http://localhost:5173",
-    methods: ["GET", "POST"],
+    methods: ["GET", "POST"]
   },
 })
 
@@ -47,7 +46,7 @@ io.on("connection", (socket) => {
     
     socket.on("send_message", (message) => {
       console.log("send_message", message)
-      socket.to(message.room).emit("receive_message", message)
+      socket.to(message.roomId).emit("receive_message", message)
     })
 })
 

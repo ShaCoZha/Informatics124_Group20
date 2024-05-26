@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from "react";
 import styles from "./chatWindowStyles.module.css"
+import axios from 'axios';
+const axiosApiInstance = axios.create();
+import { setupAxiosInterceptors } from '../verifyToken.jsx';
 
 function ChatWindow({ messages, setMessages, roomId, name, displayName, handleMessageSending }){
 
@@ -9,11 +12,11 @@ function ChatWindow({ messages, setMessages, roomId, name, displayName, handleMe
           const detected_input = event.target.value.trim();
           if(detected_input != '' && roomId !== ''){
               const messageData = {
-                room: roomId,
-                authorId: name,
-                authorDisplayName: displayName,
+                roomId: roomId,
+                senderId: name,
+                senderDisplayName: displayName,
                 message: detected_input,
-                time: new Date(Date.now())
+                timestamp: new Date(Date.now())
               }
 
               await handleMessageSending(messageData)
@@ -27,13 +30,19 @@ function ChatWindow({ messages, setMessages, roomId, name, displayName, handleMe
 
       <div className={styles.main_window}>
       <div className = {styles.text_display}>
-          {messages.map((msg, index) => (
-              <div key = {index} className={`${styles.message} ${styles.blue_bg}`}>
-                  <div className={styles.message_sender}>{msg.authorDisplayName}</div>
-                  <div className={styles.message_text}>{msg.message}</div>
-                  
-              </div>
-          ))}
+        {messages != null ? (
+        messages.map((msg, index) => (
+            <div key={index} className={`${styles.message} ${styles.blue_bg}`}>
+            <div className={styles.message_sender}>{msg.senderDisplayName}</div>
+            <div className={styles.message_text}>{msg.message}</div>
+            <div className={styles.message_text}>
+                {msg.timestamp ? new Date(msg.timestamp).toLocaleString() : ""}
+                </div>
+            </div>
+        ))
+        ) : (
+        <div className={styles.no_messages}></div>
+        )}
       </div>
       <div className = {styles.type_in}>
           <input

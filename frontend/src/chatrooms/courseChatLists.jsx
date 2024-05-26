@@ -1,17 +1,36 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styles from "./courseChatListsStyles.module.css"
 import ChatWindow from "./chatWindow"
+import axios from 'axios';
+const axiosApiInstance = axios.create();
+import { setupAxiosInterceptors } from '../verifyToken.jsx';
+setupAxiosInterceptors(axiosApiInstance);
 
-function CourseList( { handleSwitchChat, handleChatConnection } ){
+function CourseList( { handleChatConnection } ){
 
-    const chatRooms = [
-        { name: 'INF 124', imgSrc: '/chatroomone.JPG' },
-        { name: 'ICS 146', imgSrc: '/chatroomtwo.JPG' },
-        { name: 'INF 115', imgSrc: '/chatroomthree.JPG' },
-        { name: 'INF 121', imgSrc: '/chatroomfour.JPG' },
-        { name: 'INF 123', imgSrc: '/chatroomfour.JPG' }
-    ];
+    useEffect(() => {
+        async function getChatList(page, offset)
+        {
+            const response = await axiosApiInstance.get('http://localhost:3000/chat/getChatRoomInPage', {
+                withCredentials: true,
+                params : {
+                    page : page,
+                    offset : offset
+                }
+            });
 
+            const updatedRooms = response.data.map(room => ({
+                name: room,
+                imgSrc: '/chatroomone.JPG' // To be Replaced?
+            }));
+
+            setChatRooms(updatedRooms);
+        }
+
+        getChatList(1,10) //page and offset
+    }, []);
+    
+    const [chatRooms, setChatRooms ] = useState([]);
     const [activeChat, setActiveChat ] = useState(-1);
 
     return (
@@ -21,7 +40,7 @@ function CourseList( { handleSwitchChat, handleChatConnection } ){
           <div
               key = {chat.name}
               className = {`${styles.chatblock} ${index === activeChat ? styles.active : ''}`}
-              onClick = {() => {handleSwitchChat(), setActiveChat(index), handleChatConnection(chat.name)}}
+              onClick = {() => {setActiveChat(index), handleChatConnection(chat.name)}}
           >
               <div className = {styles.chat_img}>
                   <img src = {chat.imgSrc} className={styles.cover} alt = {chat.name} />

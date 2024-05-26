@@ -9,8 +9,10 @@ import axios from 'axios';
 const axiosApiInstance = axios.create();
 import { setupAxiosInterceptors } from '../verifyToken.jsx';
 setupAxiosInterceptors(axiosApiInstance);
+import { ScrollRestoration, useNavigate } from 'react-router-dom';
 
 function Chatrooms(){
+    const navigate = useNavigate();
 
     const [socket, setSocket] = useState(null);
     const [name, setName] = useState('')
@@ -19,11 +21,16 @@ function Chatrooms(){
     const [messages, setMessages] = useState([]);
 
     useEffect(() => {
+        fetchUserProfile()
         const socket = io("http://localhost:3000");
         setSocket(socket)
         socket.on("receive_message", (data) => {
             setMessages(prevMessages => [...prevMessages, data])
         })
+
+        return () => {
+            socket.disconnect();
+        };
       }, []);
 
     async function fetchUserProfile() {
@@ -40,34 +47,71 @@ function Chatrooms(){
         }
         catch(error)
         {
-        console.log(error)
+            navigate('/login');
         }
     }
-    fetchUserProfile()
+
+    useEffect(() => {
+        if(roomId)
+            {
+                handleSwitchChat();
+            }
+    }, [roomId]); 
 
 
-    const handleChatConnection = (chat) => {
-        console.log(`Connecting to chat room: ${chat}`);
-        setRoomId(chat)
+    const handleChatConnection = async (chat) => {
+        await setRoomId(chat)
         socket.emit('joinRoom', chat);
-        console.log(name, ' ', displayName)
       };
 
     const handleMessageSending = async (message) => {
-        console.log("Message sent", message.authorId);
-        await socket.emit("send_message", message)
+        try
+            {
+            const response = await axiosApiInstance.post('http://localhost:3000/chat/saveGroupChat', {
+                roomId: roomId,
+                messages: [{
+                    senderId: message.senderId,
+                    senderDisplayName: message.senderDisplayName,
+                    message: message.message,
+                    timestamp: message.timestamp
+                }]
+            }, {
+                    withCredentials: true
+            }
+            );
+                setMessages(response.data.messages)
+                await socket.emit("send_message", message)
+            }
+            catch(error)
+            {
+                console.log(error)
+            }
     }
 
-    const handleSwitchChat = () => {
+    const handleSwitchChat = async() => {
         setMessages([]); 
-      };
+        try
+        {
+            const response = await axiosApiInstance.post('http://localhost:3000/chat/getGroupChat', {
+                roomId: roomId,
+            }, {
+            withCredentials: true
+            }
+            );
+            setMessages(response.data.messages)
+        }
+        catch(error)
+        {
+            console.log(error)
+        }
+    }
 
     return (
 
     <body className = {styles.ChatRooms}>
         <Header></Header>
             <div className = {styles.other_container}>
-            <FriendList handleSwitchChat={handleSwitchChat} handleChatConnection={handleChatConnection}></FriendList>
+            <FriendList handleChatConnection={handleChatConnection}></FriendList>
             <ChatWindow socket={socket} messages={messages} setMessages={setMessages} roomId={roomId} name={name} displayName={displayName} handleMessageSending={handleMessageSending}></ChatWindow>
             </div>
         <Footer></Footer>

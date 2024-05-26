@@ -5,6 +5,10 @@ const messageSchema = mongoose.Schema({
         type: String, 
         required: true },
 
+    senderDisplayName : { 
+        type: String, 
+        required: true },
+
     message : { 
         type: String, 
         required: true },
@@ -17,7 +21,7 @@ const messageSchema = mongoose.Schema({
 
 const groupChatSchema = mongoose.Schema(
   {
-    chatId : { 
+    roomId : { 
         type: String, 
         required: true, 
         unique: true },
