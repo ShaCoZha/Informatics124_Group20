@@ -1,5 +1,6 @@
 const groupChatData = require("../models/chat/groupChatModel");
 const groupChatListData = require("../models/chat/groupChatListModel");
+const privateChatListData = require("../models/chat/privateChatModel");
 
 async function findGroupChat(chatRoomId) {
     try{
@@ -16,6 +17,59 @@ async function findGroupChat(chatRoomId) {
       catch (error) {
         return error;
       }
+}
+
+async function findPrivateChat(userX, userY) {
+  try{
+    const privateChat = await privateChatListData.findOne({
+      $and: [
+         {$or: [
+          {userOne: userX},
+          {userTwo: userX}
+        ]},
+        {$or: [
+          {userOne: userY},
+          {userTwo: userY}
+        ]}
+      ]
+  });
+
+    if(privateChat == null)
+    {
+      return null;
+    }
+    else
+    {
+      return privateChat;
+    }
+  }
+  catch (error) {
+    return error;
+  }
+}
+
+async function getPrivateChatRoomInPage(page, offset, user) {
+  if(page < 1)
+  {
+    page = 1;
+  }
+
+  const startIndex = (page - 1) * offset;
+  const endIndex = startIndex + offset;
+
+  try{
+    const privateChatInPage = await privateChatListData.find({
+      $or: [
+        { userOne: user },
+        { userTwo: user }
+      ]
+    }).skip(startIndex).limit(offset);
+
+      return privateChatInPage;
+    }
+    catch (error) {
+      return error;
+    }
 }
 
 async function getChatRoomInPage(page, offset) {
@@ -47,7 +101,7 @@ async function getGroupChat(chatRoomId) {
             {
               const newChatRoom = await new groupChatData(
                 { roomId: chatRoomId },
-                { chatRoom: [] }
+                { messages: [] }
               ).save();
             }
             else
@@ -67,10 +121,59 @@ async function getGroupChat(chatRoomId) {
       }
 }
 
-async function saveGroupChat(roomId, messages) {
-  isThereRoom = await findGroupChat(roomId);
+async function getPrivateChat(userX, userY) {
+  try{
+      const privateChat = await findPrivateChat(userX, userY);
+      if(privateChat == null)
+      {
+          const newPrivateChat = await new privateChatListData(
+            {
+             userOne: userX ,
+             userTwo: userY ,
+             messages: [] 
+            }
+          ).save();
+          return newPrivateChat;
+      }
+        return privateChat;
+
+    }
+    catch (error) {
+      return error;
+    }
+}
+
+async function getPrivateChatById(privateRoomId) {
+  try{
+      const privateChat = await privateChatListData.findOne({"_id": privateRoomId});
+      return privateChat;
+    }
+    catch (error) {
+      return error;
+    }
+}
+
+async function savePrivateChat(privateRoomId, messages) {
   try
   {
+    const privateChat = await privateChatListData.findOne({"_id" : privateRoomId});
+    if(privateChat)
+    {
+      await privateChatListData.findOneAndUpdate(
+        { _id : privateRoomId},
+        { $push: { messages: { $each: messages } } }
+      );
+    }
+  }
+  catch (error) {
+    return error;
+  }
+}
+
+async function saveGroupChat(roomId, messages) {
+  try
+  {
+    isThereRoom = await findGroupChat(roomId);
     if(isThereRoom)
     {
       await groupChatData.findOneAndUpdate(
@@ -104,5 +207,9 @@ async function saveGroupChat(roomId, messages) {
 module.exports = {
     getGroupChat,
     saveGroupChat,
-    getChatRoomInPage
+    getChatRoomInPage,
+    getPrivateChatRoomInPage,
+    getPrivateChat,
+    savePrivateChat,
+    getPrivateChatById
 };

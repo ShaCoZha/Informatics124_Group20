@@ -4,7 +4,17 @@ const tokenService = require("../services/TokenService");
 module.exports = {
 
   getUserProfile : async (req, res) => {
-    const result = await userService.getUserProfile(req.user.name);
+    const uname = req.query.userName;
+    var result = null;
+    if(uname == undefined)
+    {
+      result = await userService.getUserProfile(req.user.name);
+    }
+    else
+    {
+      result = await userService.getUserProfile(uname);
+    }
+    
     if (result instanceof Error)
     {
       res.status(401).send(result.stack);

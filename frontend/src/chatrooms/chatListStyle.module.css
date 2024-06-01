@@ -149,7 +149,7 @@
     text-decoration: none;
   }
   
-  .chatblock.active {
+  .list.active {
     background-color: #c6be85;
     color: #555759;
   }

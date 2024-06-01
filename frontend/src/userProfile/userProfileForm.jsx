@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { ScrollRestoration, useNavigate } from 'react-router-dom';
 import styles from './userProfileFormStyle.module.css';
@@ -10,6 +10,11 @@ setupAxiosInterceptors(axiosApiInstance);
 function UserProfileForm() {
   const navigate = useNavigate();
 
+  useEffect(() => {
+    fetchUserProfile()
+  }, []);
+
+
   async function fetchUserProfile() {
     try
     {
@@ -17,7 +22,7 @@ function UserProfileForm() {
         withCredentials: true
       }
       );
-  
+      console.log("call")
       setName(response.data.displayName);
       setyear(response.data.year);
       setDepartment(response.data.department);
@@ -34,7 +39,6 @@ function UserProfileForm() {
     const [year, setyear] = useState('')
     const [department, setDepartment] = useState('')
     const [major, setMajor] = useState('')
-    fetchUserProfile();
 
   return (
 

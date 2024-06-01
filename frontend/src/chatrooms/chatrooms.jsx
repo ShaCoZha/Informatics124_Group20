@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Header from "../header/header.jsx"
 import Footer from "../footer/footer.jsx"
 import styles from "./chatroomStyle.module.css"
-import FriendList from "./chatList.jsx";
+import ChatList from "./chatList.jsx";
 import ChatWindow from "./chatWindow.jsx";
 import { io } from "socket.io-client";
 import axios from 'axios';
@@ -18,7 +18,12 @@ function Chatrooms(){
     const [name, setName] = useState('')
     const [displayName, setDisplayName] = useState('')
     const [roomId, setRoomId] = useState('');
+    const [privateRoomId, setPrivateRoomId] = useState('')
     const [messages, setMessages] = useState([]);
+    const [selectedList, changeSelectedList ] = useState("1");
+    const [friendList, setFriendList ] = useState([]);
+    const [chatRooms, setChatRooms ] = useState([]);
+    const [activeChat, setActiveChat ] = useState(-1);
 
     useEffect(() => {
         fetchUserProfile()
@@ -52,11 +57,18 @@ function Chatrooms(){
     }
 
     useEffect(() => {
-        if(roomId)
+        if(roomId && roomId != -1)
             {
                 handleSwitchChat();
             }
     }, [roomId]); 
+
+    useEffect(() => {
+        if(privateRoomId && privateRoomId!= -1)
+            {
+                handleSwitchChat();
+            }
+    }, [privateRoomId]); 
 
 
     const handleChatConnection = async (chat) => {
@@ -67,18 +79,38 @@ function Chatrooms(){
     const handleMessageSending = async (message) => {
         try
             {
-            const response = await axiosApiInstance.post('http://localhost:3000/chat/saveGroupChat', {
-                roomId: roomId,
-                messages: [{
-                    senderId: message.senderId,
-                    senderDisplayName: message.senderDisplayName,
-                    message: message.message,
-                    timestamp: message.timestamp
-                }]
-            }, {
-                    withCredentials: true
-            }
-            );
+                var response
+                if(selectedList == 1)
+                 {
+                    response = await axiosApiInstance.post('http://localhost:3000/chat/saveGroupChat', {
+                        roomId: roomId,
+                        messages: [{
+                            senderId: message.senderId,
+                            senderDisplayName: message.senderDisplayName,
+                            message: message.message,
+                            timestamp: message.timestamp
+                        }]
+                    }, {
+                            withCredentials: true
+                    })
+                }
+                else
+                {
+
+                    response = await axiosApiInstance.post('http://localhost:3000/chat/savePrivateChat', {
+                        privateRoomId: privateRoomId,
+                        messages: [{
+                            senderId: message.senderId,
+                            senderDisplayName: message.senderDisplayName,
+                            message: message.message,
+                            timestamp: message.timestamp
+                        }]
+                    }, {
+                            withCredentials: true
+                    })
+                    console.log(privateRoomId);
+                }
+            
                 setMessages(response.data.messages)
                 await socket.emit("send_message", message)
             }
@@ -92,13 +124,33 @@ function Chatrooms(){
         setMessages([]); 
         try
         {
-            const response = await axiosApiInstance.post('http://localhost:3000/chat/getGroupChat', {
-                roomId: roomId,
-            }, {
-            withCredentials: true
+            var response
+            if(selectedList == 1)
+            {
+                response = await axiosApiInstance.post('http://localhost:3000/chat/getGroupChat', {
+                    roomId: roomId,
+                }, {
+                    withCredentials: true
+                }
+                );
             }
-            );
-            setMessages(response.data.messages)
+            else
+            {
+                response = await axiosApiInstance.get('http://localhost:3000/chat/getPrivateChatById', {
+                    params : {
+                        privateRoomId: privateRoomId,
+                    }
+                }, {
+                    withCredentials: true
+                }
+                );
+            }
+
+            if(response)
+                {
+                    setMessages(response.data.messages)
+                }
+            
         }
         catch(error)
         {
@@ -106,13 +158,18 @@ function Chatrooms(){
         }
     }
 
+    const newPrivateChat = (targetUserId) => {
+
+    }
+
     return (
 
     <body className = {styles.ChatRooms}>
         <Header></Header>
             <div className = {styles.other_container}>
-            <FriendList handleChatConnection={handleChatConnection}></FriendList>
-            <ChatWindow socket={socket} messages={messages} setMessages={setMessages} roomId={roomId} name={name} displayName={displayName} handleMessageSending={handleMessageSending}></ChatWindow>
+            <ChatList handleChatConnection={handleChatConnection} selectedList={selectedList} changeSelectedList={changeSelectedList} friendList = {friendList} setFriendList = {setFriendList} name = {name} setPrivateRoomId = {setPrivateRoomId} activeChat = {activeChat} setActiveChat = {setActiveChat} chatRooms = {chatRooms} setChatRooms = {setChatRooms}></ChatList>
+            <ChatWindow socket={socket} messages={messages} setMessages={setMessages} roomId={roomId} name={name} displayName={displayName} handleMessageSending={handleMessageSending} changeSelectedList={changeSelectedList} handleChatConnection = {handleChatConnection} setActiveChat = {setActiveChat} friendList = {friendList} setPrivateRoomId = {setPrivateRoomId}
+            setFriendList = {setFriendList} chatRooms = {chatRooms} setRoomId = {setRoomId}></ChatWindow>
             </div>
         <Footer></Footer>
     </body>

@@ -25,6 +25,11 @@ const userProfileSchema = mongoose.Schema(
     major : {
       type: String,
       default: ""
+    },
+
+    profilePicture : {
+      type: String,
+      default: ""
     }
   }
 );

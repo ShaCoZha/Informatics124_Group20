@@ -2,13 +2,13 @@ const userData = require("../models/user/userModel");
 const userProfile = require("../models/user/userProfileModel");
 const bcrypt = require('bcryptjs');
 
-async function createUser(name, email, password, displayName, year, department, major, role) {
+async function createUser(name, email, password, displayName, year, department, major, role, profilePic) {
   var err = new Error();
   try{
     const salt = await bcrypt.genSalt();
     const hashedPassword = await bcrypt.hash(password, salt);
     const newUser = await new userData({name : name, email : email, password_hash : hashedPassword, salt : salt, role : role}).save();
-    const newUserProfile = await new userProfile({name : name, displayName : displayName, year : year, department : department, major : major}).save();
+    const newUserProfile = await new userProfile({name : name, displayName : displayName, year : year, department : department, major : major, profilePicture : profilePic}).save();
   }
   catch (error) {
     return error;

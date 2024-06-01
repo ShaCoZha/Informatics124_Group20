@@ -6,7 +6,7 @@ const axiosApiInstance = axios.create();
 import { setupAxiosInterceptors } from '../verifyToken.jsx';
 setupAxiosInterceptors(axiosApiInstance);
 
-function CourseList( { handleChatConnection } ){
+function CourseList( { handleChatConnection, activeChat, setActiveChat, chatRooms, setChatRooms} ){
 
     useEffect(() => {
         async function getChatList(page, offset)
@@ -30,8 +30,6 @@ function CourseList( { handleChatConnection } ){
         getChatList(1,10) //page and offset
     }, []);
     
-    const [chatRooms, setChatRooms ] = useState([]);
-    const [activeChat, setActiveChat ] = useState(-1);
 
     return (
 
@@ -40,7 +38,7 @@ function CourseList( { handleChatConnection } ){
           <div
               key = {chat.name}
               className = {`${styles.chatblock} ${index === activeChat ? styles.active : ''}`}
-              onClick = {() => {setActiveChat(index), handleChatConnection(chat.name)}}
+              onClick = {() => {setActiveChat(index), handleChatConnection(chat.name), console.log(chat.name)}}
           >
               <div className = {styles.chat_img}>
                   <img src = {chat.imgSrc} className={styles.cover} alt = {chat.name} />
