@@ -10,6 +10,7 @@ import About from "./about/about"
 import Feedback from "./feedback/feedback"
 import Chatrooms from "./chatrooms/chatrooms"
 import Schedule from "./schedule/schedule"
+import Find_friends from "./find_friends/find_friends"
 
 
 function App() {
@@ -25,6 +26,7 @@ function App() {
       <Route path="/Feedback" element={<Feedback />} />
       <Route path="/chatrooms" element={<Chatrooms />}/>
       <Route path="/schedule" element={<Schedule />}/>
+      <Route path="/find_friends" element={<Find_friends />}/>
 
     </Routes>
   )

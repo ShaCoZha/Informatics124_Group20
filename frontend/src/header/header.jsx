@@ -11,6 +11,7 @@ const header = ({ }) => {
         <a href="../schedule">Course Schedule</a>
         <a href="../chatrooms">Chat Room</a>
         <a href="../about">About</a>
+        <a href="../find_friends">Find Friends</a>
     </div>
     <a href="../userProfile">
         <div className={styles.profilePicContainer}>
