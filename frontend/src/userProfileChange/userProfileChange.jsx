@@ -13,7 +13,6 @@ function userProfile() {
 
     <Header></Header>
     <body className={styles.centerContent}>
-      <ProfilePic className={styles.picContainer}></ProfilePic>
       <ProfileChangeForm className={styles.profileContainer}></ProfileChangeForm>
     </body>
     <Footer></Footer>

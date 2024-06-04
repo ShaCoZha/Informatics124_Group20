@@ -34,9 +34,30 @@ nav {
 
 /* rounded profile photo */
 .profilePicContainer {
-  border-radius: 50%;
   width: 50px;
+  height: 50px;
+  border-radius: 50%;
   overflow: hidden;
+  display: flex; /* or inline-flex */
+  align-items: center; 
+  justify-content: center;
+}
+
+.linkToProf:link {
+  text-decoration: none;
+  color:white;
+}
+.linkToProf:visited {
+  text-decoration: none;
+  color:white;
+}
+.linkToProf:hover {
+  text-decoration: none;
+  color:white;
+}
+.linkToProf:active {
+  text-decoration: none;
+  color:white;
 }
 
 /* profile-pic size */

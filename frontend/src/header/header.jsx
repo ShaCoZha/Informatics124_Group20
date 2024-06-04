@@ -1,8 +1,37 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import styles from './header.module.css';
 import { Link } from "react-router-dom";
+import axios from 'axios';
+const axiosApiInstance = axios.create();
+import { setupAxiosInterceptors } from '../verifyToken.jsx';
 
 const header = ({ }) => {
+
+  const [user, setUser] = useState(null);
+  const [profileColor, setProfileColor] = useState('');
+
+  async function getProfile() {
+    try{
+      const profile = await axiosApiInstance.get('http://localhost:3000/user/getUserProfile', {
+          withCredentials: true,
+          });
+      return profile.data;
+    }catch(error)
+    {
+    }
+    }
+
+    useEffect(() => {
+      getProfile().then(async function () {
+        const userProfile = await getProfile();
+        setUser(userProfile);
+        setProfileColor(userProfile.profilePicture)
+      })
+        
+      return () => {
+      };
+    }, []);
+
   
   return (
     <nav className={styles.nav}>
@@ -13,9 +42,9 @@ const header = ({ }) => {
         <a href="../about">About</a>
         <a href="../find_friends">Find Friends</a>
     </div>
-    <a href="../userProfile">
-        <div className={styles.profilePicContainer}>
-            <img src="/profile-pic.JPG" alt="Profile" className={styles.profilePic}></img>
+    <a className = {styles.linkToProf} href="../userProfile">
+        <div className={styles.profilePicContainer} style={{backgroundColor: profileColor}}>
+          {user == null? "" : user.displayName.charAt(0)}
         </div>
     </a>
     </nav>

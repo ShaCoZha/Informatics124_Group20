@@ -49,7 +49,7 @@ function UserProfileForm() {
             <div className={styles.form}> 
        
              <div className={styles.displayField}> 
-               <label className={styles.word}><b>Name</b></label>
+               <label className={styles.word}><b>DisplayName</b></label>
                <span className={styles.display}>{name}</span>
              </div> 
 

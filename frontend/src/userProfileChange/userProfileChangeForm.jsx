@@ -93,7 +93,7 @@ function UserProfileChangeForm() {
             <div className={styles.form}> 
        
              <div className={styles.inputBox}> 
-               <label className={styles.word}><b>Name</b></label>
+               <label className={styles.word}><b>DisplayName</b></label>
                <input type="text" id="displayName" value = {name} onChange={(e) => setName(e.target.value)} required></input>
              </div> 
 
