@@ -1,7 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
+import html2canvas from 'html2canvas';
 import styles from './schedule.module.css';
 import Header from '../header/header.jsx';
 import Footer from '../footer/footer.jsx';
+import ScreenshotIcon from './screenshot_icon.svg';
 
 const Schedule = () => {
   const [filtersVisible, setFiltersVisible] = useState(false);
@@ -23,7 +25,7 @@ const Schedule = () => {
   const [startWidthRight, setStartWidthRight] = useState(0);
   const [selectedDays, setSelectedDays] = useState([]);
   const scheduleRef = useRef(null);
-  const boxHeight = 40; // Height of each box in pixels
+  const boxHeight = 20; // Height of each box in pixels
 
   useEffect(() => {
     fetchAllCoursesData();
@@ -99,12 +101,12 @@ const Schedule = () => {
         const eventDiv = document.createElement('div');
         eventDiv.classList.add(styles.eventContent);
         eventDiv.style.backgroundColor = color;
-        eventDiv.style.height = `${boxHeight * durationRows/2}px`; // Set height based on duration
+        eventDiv.style.height = `${calculateHeightInPx(startTime, endTime)}px`; // Set height based on duration
         eventDiv.style.borderRadius = '8px'; // Rounded corners
         eventDiv.style.padding = '5px';
         eventDiv.style.position = 'absolute';
         eventDiv.style.width = `${cell.clientWidth}px`; // Set width based on the cell width
-        eventDiv.innerHTML = `<strong>${name}</strong><br>${startTime} - ${endTime}`;
+        eventDiv.innerHTML = `<strong>${name}</strong>${startTime} - ${endTime}`;
 
         // Clear any existing content and append new event
         cell.innerHTML = '';
@@ -127,6 +129,12 @@ const Schedule = () => {
         });
       }
     });
+  };
+
+  const calculateHeightInPx = (start, end) => {
+    const startMinutes = parseInt(start.split(':')[0]) * 60 + parseInt(start.split(':')[1]);
+    const endMinutes = parseInt(end.split(':')[0]) * 60 + parseInt(end.split(':')[1]);
+    return (endMinutes - startMinutes) / 30 * (boxHeight + 3);
   };
 
   const removeEvent = (eventToRemove) => {
@@ -318,6 +326,17 @@ const Schedule = () => {
     }
   };
 
+  const captureScreenshot = async () => {
+    const element = document.querySelector(`.${styles.schedule}`);
+    const canvas = await html2canvas(element);
+    const dataUrl = canvas.toDataURL('image/png');
+
+    const link = document.createElement('a');
+    link.href = dataUrl;
+    link.download = 'schedule.png';
+    link.click();
+  };
+
   useEffect(() => {
     initializeEventListeners();
   }, []);
@@ -326,7 +345,6 @@ const Schedule = () => {
     <div className={styles.scheduleBody}>
       <Header />
       <div className={styles.container}>
-
         <div className={styles.schedule} ref={scheduleRef}>
           <table>
             <thead>
@@ -361,8 +379,10 @@ const Schedule = () => {
         ></div>
         
         <div className={styles.classSearch}>
-
           <div className={styles.buttonContainer}>
+            <button onClick={captureScreenshot} className={styles.screenshotButton}>
+              <img src={ScreenshotIcon} alt="Screenshot" className={styles.screenshotIcon}/>
+            </button>
             <button id="toggleFilters" onClick={() => {
               setSearchVisible(!searchVisible);
               setFiltersVisible(!filtersVisible);
@@ -383,7 +403,7 @@ const Schedule = () => {
               setAddedVisible(false);
             }}>Custom</button>
           </div>
-          
+
           {filtersVisible && (
             <div id="filters" className={styles.filters}>
               <div className={styles.filterItem}>
