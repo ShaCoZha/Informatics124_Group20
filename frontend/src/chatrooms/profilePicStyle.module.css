@@ -1,3 +1,14 @@
 .profilePicContainer:hover {
   cursor: pointer; /* Change cursor to pointer on hover */
 }
+
+.profilePicContainer {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  overflow: hidden;
+  display: flex; /* or inline-flex */
+  align-items: center; 
+  justify-content: center;
+  color: white;
+}

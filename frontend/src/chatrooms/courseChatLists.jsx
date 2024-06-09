@@ -38,7 +38,7 @@ function CourseList( { handleChatConnection, activeChat, setActiveChat, chatRoom
           <div
               key = {chat.name}
               className = {`${styles.chatblock} ${index === activeChat ? styles.active : ''}`}
-              onClick = {() => {setActiveChat(index), handleChatConnection(chat.name), console.log(chat.name)}}
+              onClick = {() => {setActiveChat(index), handleChatConnection(chat.name)}}
           >
               <div className = {styles.chat_img}>
                   <img src = {chat.imgSrc} className={styles.cover} alt = {chat.name} />

@@ -207,3 +207,23 @@
   width: 50px;
   overflow: hidden;
 }
+
+.profileAndName{
+  display: flex;
+  flex-direction: row;
+}
+
+.dpName {
+  justify-content: center;
+  margin-top: 12.5px;
+  margin-left: 10px;
+}
+
+.dateString {
+  font-size: 0.8rem;
+}
+
+.textString {
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+}

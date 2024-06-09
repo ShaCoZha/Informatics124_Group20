@@ -35,11 +35,14 @@ function ChatWindow({ messages, setMessages, roomId, name, displayName, handleMe
         {messages != null ? (
         messages.map((msg, index) => (
             <div key={index} className={`${styles.message} ${styles.blue_bg}`}>
-            <ProfilePic className={styles.profilePic} senderDisplayName = {msg.senderDisplayName} senderName = {msg.senderId} changeSelectedList={changeSelectedList}
-            handleChatConnection = {handleChatConnection} name = {name} setActiveChat = {setActiveChat} friendList = {friendList} setPrivateRoomId = {setPrivateRoomId} setMessages = {setMessages} setFriendList = {setFriendList} chatRooms = {chatRooms} setRoomId = {setRoomId}></ProfilePic>
-            <div className={styles.message_sender}>{msg.senderDisplayName}</div>
-            <div className={styles.message_text}>{msg.message}</div>
-            <div className={styles.message_text}>
+            <div className={styles.profileAndName}>
+              <ProfilePic className={styles.profilePic} senderDisplayName = {msg.senderDisplayName} senderName = {msg.senderId} changeSelectedList={changeSelectedList}
+              handleChatConnection = {handleChatConnection} name = {name} setActiveChat = {setActiveChat} friendList = {friendList} setPrivateRoomId = {setPrivateRoomId} setMessages = {setMessages} setFriendList = {setFriendList} chatRooms = {chatRooms} setRoomId = {setRoomId}></ProfilePic>
+              <div className={`${styles.message_sender} ${styles.dpName}`}>{msg.senderDisplayName}</div>
+            </div>
+            <div className={`${styles.message_text} ${styles.textString}`}>
+              {msg.message}</div>
+            <div className={`${styles.message_text} ${styles.dateString}`}>
                 {msg.timestamp ? new Date(msg.timestamp).toLocaleString() : ""}
                 </div>
             </div>

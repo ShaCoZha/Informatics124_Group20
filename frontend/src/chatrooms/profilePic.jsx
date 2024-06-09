@@ -86,7 +86,6 @@ function ProfilePic({ senderDisplayName, senderName, changeSelectedList, handleC
         );
   
         setMessages(response.data.messages)
-        console.log(response.data._id)
         handleChatConnection(response.data._id)
         return response.data
       }catch(error)
