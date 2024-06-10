@@ -40,7 +40,6 @@ const header = ({ }) => {
         <a href="../schedule">Course Schedule</a>
         <a href="../chatrooms">Chat Room</a>
         <a href="../about">About</a>
-        <a href="../find_friends">Find Friends</a>
     </div>
     <a className = {styles.linkToProf} href="../userProfile">
         <div className={styles.profilePicContainer} style={{backgroundColor: profileColor}}>

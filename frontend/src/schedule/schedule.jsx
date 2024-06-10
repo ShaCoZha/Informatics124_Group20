@@ -4,32 +4,40 @@ import styles from './schedule.module.css';
 import Header from '../header/header.jsx';
 import Footer from '../footer/footer.jsx';
 import ScreenshotIcon from './screenshot_icon.svg';
+import TrashIcon from './trash_icon.svg';
+import PlusIcon from './plus_icon.svg';
+import ReturnIcon from './return_icon.svg';
+import CloseIcon from './close_icon.svg'; // Import the close icon
 
 const Schedule = () => {
   const [filtersVisible, setFiltersVisible] = useState(false);
   const [eventFormVisible, setEventFormVisible] = useState(false);
   const [searchVisible, setSearchVisible] = useState(false);
   const [addedVisible, setAddedVisible] = useState(false);
+  const [returnVisible, setReturnVisible] = useState(false);
   const [courses, setCourses] = useState([]);
   const [terms, setTerms] = useState([]);
   const [departments, setDepartments] = useState([]);
-  const [courseLevels, setCourseLevels] = useState([]);
-  const [geList, setGeList] = useState([]);
   const [searchResults, setSearchResults] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
-  const [filteredCourses, setFilteredCourses] = useState([]);
   const [events, setEvents] = useState([]);
   const [resizing, setResizing] = useState(false);
   const [startX, setStartX] = useState(0);
   const [startWidthLeft, setStartWidthLeft] = useState(0);
   const [startWidthRight, setStartWidthRight] = useState(0);
   const [selectedDays, setSelectedDays] = useState([]);
+  const [selectedTerm, setSelectedTerm] = useState("Select a term");
+  const [selectedDepartment, setSelectedDepartment] = useState("Select a department");
+  const [selectedCourse, setSelectedCourse] = useState(null);
+  const [addedCourses, setAddedCourses] = useState([]);
   const scheduleRef = useRef(null);
-  const boxHeight = 20; // Height of each box in pixels
+  const resizerRef = useRef(null);
+  const boxHeight = 20;
 
   useEffect(() => {
     fetchAllCoursesData();
     window.addEventListener('resize', updateBoxSizes);
+    resetResizerPosition();
     return () => window.removeEventListener('resize', updateBoxSizes);
   }, []);
 
@@ -62,13 +70,23 @@ const Schedule = () => {
     };
   }, [resizing, startX, startWidthLeft, startWidthRight]);
 
+  const resetResizerPosition = () => {
+    const containerWidth = document.querySelector(`.${styles.container}`).offsetWidth;
+    const middle = containerWidth / 2;
+    const scheduleWidth = middle - resizerRef.current.offsetWidth / 2;
+    const classSearchWidth = middle - resizerRef.current.offsetWidth / 2;
+
+    document.querySelector(`.${styles.schedule}`).style.width = `${scheduleWidth}px`;
+    document.querySelector(`.${styles.classSearch}`).style.width = `${classSearchWidth}px`;
+  };
+
   const updateBoxSizes = () => {
     const scheduleTable = document.querySelector(`.${styles.schedule} table`);
     const rows = scheduleTable.rows;
 
     for (let i = 0; i < rows.length; i++) {
       const cells = rows[i].cells;
-      for (let j = 1; j < cells.length; j++) { // Skip the first cell as it is the time label
+      for (let j = 1; j < cells.length; j++) { 
         const cell = cells[j];
         const eventDiv = cell.querySelector(`.${styles.eventContent}`);
         if (eventDiv) {
@@ -87,43 +105,119 @@ const Schedule = () => {
     const startTime = document.getElementById('eventStartTime').value;
     const endTime = document.getElementById('eventEndTime').value;
     const selectedDays = Array.from(document.querySelectorAll(`.${styles.day}.${styles.selected}`)).map(day => day.textContent.trim());
-    const scheduleTable = document.querySelector(`.${styles.schedule} table`);
     const color = getRandomColor();
+    addEventToSchedule(name, `${startTime}-${endTime}`, selectedDays, false, '', color);
+  };
 
-    selectedDays.forEach(day => {
+  const convertTime12to24 = (time) => {
+    if (!time.includes('p')) {
+      return time.split('-').map(t => t.trim());
+    }
+
+    const [timePart, modifier] = time.trim().split(/([ap])/);
+    let [start, end] = timePart.split('-').map(t => t.trim());
+    let [startHours, startMinutes] = start.split(':');
+    let [endHours, endMinutes] = end.split(':');
+
+    if (modifier === 'p') {
+      if (parseInt(startHours, 10) < 12 && parseInt(startHours, 10) < 10) {
+        startHours = String(parseInt(startHours, 10) + 12);
+      }
+      if (parseInt(endHours, 10) < 12 && parseInt(endHours, 10) < 10) {
+        endHours = String(parseInt(endHours, 10) + 12);
+      }
+    }
+
+    return [`${startHours}:${startMinutes}`, `${endHours}:${endMinutes}`];
+  };
+
+  const parseDays = (days) => {
+    const dayMap = {
+      M: 'Mon',
+      Tu: 'Tue',
+      W: 'Wed',
+      Th: 'Thu',
+      F: 'Fri',
+    };
+    const parsedDays = [];
+
+    if (days.includes('MWF')) {
+      parsedDays.push('Mon', 'Wed', 'Fri');
+    } else if (days.includes('TuTh')) {
+      parsedDays.push('Tue', 'Thu');
+    } else if (days.includes('MW')) {
+      parsedDays.push('Mon', 'Wed');
+    } else {
+      for (const [key, value] of Object.entries(dayMap)) {
+        if (days.includes(key)) {
+          parsedDays.push(value);
+        }
+      }
+    }
+
+    return parsedDays;
+  };
+
+  const addEventToSchedule = (name, time, days, fromCourseTable = false, department = '', color) => {
+    const scheduleTable = document.querySelector(`.${styles.schedule} table`);
+
+    let parsedDays = days;
+    let start24HourTime = time.split('-')[0].trim();
+    let end24HourTime = time.split('-')[1].trim();
+    let sectionType = '';
+
+    if (fromCourseTable) {
+      parsedDays = parseDays(days);
+      [start24HourTime, end24HourTime] = convertTime12to24(time);
+      const [courseNumber, type] = name.split(' ');
+      name = `${department} ${courseNumber}`;
+      sectionType = type;
+    }
+
+    parsedDays.forEach(day => {
       const dayIndex = getDayIndex(day);
-      const startRow = getTimeRowIndex(startTime);
-      const endRow = getTimeRowIndex(endTime);
+      const startRow = getTimeRowIndex(start24HourTime);
+      const endRow = getTimeRowIndex(end24HourTime);
       const durationRows = endRow - startRow;
 
       if (startRow >= 0 && startRow < scheduleTable.rows.length) {
-        const cell = scheduleTable.rows[startRow + 1].cells[dayIndex + 1]; // +1 to skip the time label column
+        const cell = scheduleTable.rows[startRow + 1].cells[dayIndex + 1];
         const eventDiv = document.createElement('div');
         eventDiv.classList.add(styles.eventContent);
         eventDiv.style.backgroundColor = color;
-        eventDiv.style.height = `${calculateHeightInPx(startTime, endTime)}px`; // Set height based on duration
-        eventDiv.style.borderRadius = '8px'; // Rounded corners
+        eventDiv.style.height = `${calculateHeightInPx(start24HourTime, end24HourTime)}px`;
+        eventDiv.style.borderRadius = '8px';
         eventDiv.style.padding = '5px';
         eventDiv.style.position = 'absolute';
-        eventDiv.style.width = `${cell.clientWidth}px`; // Set width based on the cell width
-        eventDiv.innerHTML = `<strong>${name}</strong>${startTime} - ${endTime}`;
+        eventDiv.style.width = `${cell.clientWidth}px`;
+        eventDiv.innerHTML = `
+          <div style="display: flex; justify-content: space-between; width: 100%; font-size: 12px; color: black;">
+            <strong style="text-align: left;">${name}</strong>
+            <strong style="text-align: right;">${sectionType}</strong>
+            <img src=${CloseIcon} class="${styles.closeIcon}" alt="close" />
+          </div>
+          <div style="font-size: 10px; color: black;">${start24HourTime} - ${end24HourTime}</div>
+        `;
 
-        // Clear any existing content and append new event
+        eventDiv.querySelector(`.${styles.closeIcon}`).addEventListener('click', () => {
+          removeEventsByColor(color);
+        });
+
         cell.innerHTML = '';
         cell.appendChild(eventDiv);
         cell.style.position = 'relative';
-        cell.style.padding = '0'; // Remove padding to fit event div properly
+        cell.style.padding = '0';
 
-        // Update the event in the state
         setEvents((prevEvents) => {
           const existingEventIndex = prevEvents.findIndex(event => event.name === name);
           if (existingEventIndex !== -1) {
             prevEvents[existingEventIndex].elements.push(eventDiv);
+            prevEvents[existingEventIndex].color = color;
             return [...prevEvents];
           } else {
             return [
               ...prevEvents,
-              { name, startTime, endTime, days: selectedDays, color, elements: [eventDiv] }
+              { name, startTime: start24HourTime, endTime: end24HourTime, days: parsedDays, color, elements: [eventDiv] }
             ];
           }
         });
@@ -139,9 +233,30 @@ const Schedule = () => {
 
   const removeEvent = (eventToRemove) => {
     setEvents((prevEvents) => {
-      const updatedEvents = prevEvents.filter((event) => event !== eventToRemove);
-      eventToRemove.elements.forEach(element => element.remove()); // Remove all event rectangles
+      const updatedEvents = prevEvents.filter((event) => event.name !== eventToRemove.name);
+      eventToRemove.elements.forEach(element => element.remove());
       return updatedEvents;
+    });
+  };
+
+  const removeEventsByColor = (color) => {
+    setEvents((prevEvents) => {
+      const updatedEvents = prevEvents.filter((event) => {
+        if (event.color === color) {
+          event.elements.forEach(element => element.remove());
+          return false;
+        }
+        return true;
+      });
+      return updatedEvents;
+    });
+  };
+
+  const removeAllEvents = () => {
+    setEvents((prevEvents) => {
+      prevEvents.forEach(event => event.elements.forEach(element => element.remove()));
+      setAddedCourses([]);
+      return [];
     });
   };
 
@@ -163,8 +278,8 @@ const Schedule = () => {
 
   const getRandomColor = () => {
     const h = Math.floor(Math.random() * 360);
-    const s = 70 + Math.floor(Math.random() * 30); // Keep saturation high
-    const l = 50 + Math.floor(Math.random() * 10); // Keep lightness moderate to avoid too light colors
+    const s = 70 + Math.floor(Math.random() * 30);
+    const l = 50 + Math.floor(Math.random() * 10);
     return `hsl(${h}, ${s}%, ${l}%)`;
   };
 
@@ -183,8 +298,6 @@ const Schedule = () => {
               title
               department
               terms
-              course_level
-              ge_list
             }
           }
         `
@@ -198,58 +311,28 @@ const Schedule = () => {
       setCourses(courses);
       setTerms(uniqueTerms);
       setDepartments(extractUnique(courses, 'department'));
-      setCourseLevels(extractUnique(courses, 'course_level').sort(sortCourseLevels));
-      setGeList(extractUnique(courses, 'ge_list').sort(sortGeList));
     }
   };
 
   const extractUnique = (courses, attribute) => {
     const unique = courses.map(course => course[attribute])
-      .flat() // Flatten in case of arrays like terms
+      .flat()
       .filter((value, index, self) => self.indexOf(value) === index && value);
     return unique.map(item => ({ id: item, name: item }));
   };
 
   const sortTerms = (a, b) => {
-    // Custom sort function for terms
     const termRegex = /(\d{4}) (Summer10wk|Summer2|Summer1|Spring|Winter|Fall)/;
     const matchA = a.name.match(termRegex);
     const matchB = b.name.match(termRegex);
     if (matchA && matchB) {
       const yearDiff = parseInt(matchB[1]) - parseInt(matchA[1]);
-      if (yearDiff !== 0) return yearDiff; // Different years
+      if (yearDiff !== 0) return yearDiff;
 
-      // Order for terms within the same year
       const termOrder = ['Fall', 'Summer2', 'Summer10wk', 'Summer1', 'Spring', 'Winter'];
       return termOrder.indexOf(matchA[2]) - termOrder.indexOf(matchB[2]);
     }
-    return 0; // In case of no matches (unlikely), consider equal
-  };
-
-  const sortCourseLevels = (a, b) => {
-    const order = [
-      "Lower Division (1-99)",
-      "Upper Division (100-199)",
-      "Graduate/Professional Only (200+)"
-    ];
-    return order.indexOf(a.name) - order.indexOf(b.name);
-  };
-
-  const sortGeList = (a, b) => {
-    // Predefined order for GE categories
-    const order = [
-      "GE Ia: Lower Division Writing",
-      "GE Ib: Upper Division Writing",
-      "GE II: Science and Technology",
-      "GE III: Social & Behavioral Sciences",
-      "GE IV: Arts and Humanities",
-      "GE Va: Quantitative Literacy",
-      "GE Vb: Formal Reasoning",
-      "GE VI: Language Other Than English",
-      "GE VII: Multicultural Studies",
-      "GE VIII: International/Global Issues"
-    ];
-    return order.indexOf(a.name) - order.indexOf(b.name);
+    return 0;
   };
 
   const toggleDaySelection = (day) => {
@@ -273,7 +356,7 @@ const Schedule = () => {
     });
   };
 
-  const fetchCourseDetails = async (courseId) => {
+  const fetchCourseDetails = async () => {
     const response = await fetch('https://api.peterportal.org/graphql', {
       method: 'POST',
       headers: {
@@ -282,48 +365,60 @@ const Schedule = () => {
       },
       body: JSON.stringify({
         query: `
-          query {
-            course(id: "${courseId}") {
-              section {
+          query GetCourseDetails($year: Float!, $quarter: String!, $department: String!, $course_number: String!) {
+            schedule(
+              year: $year,
+              quarter: $quarter,
+              department: $department,
+              course_number: $course_number
+            ) {
+              course {
                 id
-                section_code
-                section_type
-                instructor
+                title
+                department
+              }
+              section {
+                code
+                type
+              }
+              meetings {
                 days
-                start_time
-                end_time
-                building
-                room
-                max_capacity
+                time
               }
             }
           }
-        `
+        `,
+        variables: {
+          year: 2024,
+          quarter: selectedTerm,
+          department: selectedDepartment,
+          course_number: searchQuery
+        }
       })
     });
 
     const data = await response.json();
-    if (data && data.data && data.data.course) {
-      setSearchResults(data.data.course.section);
+    if (data && data.data && data.data.schedule) {
+      setSearchResults(data.data.schedule);
+      const course = {
+        id: searchQuery,
+        title: data.data.schedule[0]?.course.title,
+        department: selectedDepartment
+      };
+      setSelectedCourse(course);
+      setReturnVisible(true);
     }
   };
 
-  const handleSearch = (courseId) => {
-    fetchCourseDetails(courseId);
-    setSearchQuery(""); // Clear the search query
-    setFilteredCourses([]); // Clear the filtered courses
+  const handleSearch = () => {
+    fetchCourseDetails();
+    setSearchQuery("");
+    setFiltersVisible(false);
+    setSearchVisible(false);
   };
 
   const handleSearchInputChange = (e) => {
     setSearchQuery(e.target.value);
-    if (e.target.value.length > 0) {
-      const filtered = courses.filter(course =>
-        course.title.toLowerCase().includes(e.target.value.toLowerCase())
-      );
-      setFilteredCourses(filtered);
-    } else {
-      setFilteredCourses([]);
-    }
   };
 
   const captureScreenshot = async () => {
@@ -335,6 +430,31 @@ const Schedule = () => {
     link.href = dataUrl;
     link.download = 'schedule.png';
     link.click();
+  };
+
+  const handleReturn = () => {
+    setSelectedCourse(null);
+    setSearchResults([]);
+    setReturnVisible(false);
+    setSearchVisible(false);
+    setAddedVisible(false);
+    setEventFormVisible(false);
+  };
+
+  const handlePlusClick = (offering, course) => {
+    const color = getRandomColor();
+    addEventToSchedule(
+      `${course.id} ${offering.section.type}`,
+      offering.meetings[0]?.time,
+      offering.meetings[0]?.days,
+      true,
+      course.department,
+      color
+    );
+    setAddedCourses((prev) => [
+      ...prev,
+      { offering, course, color }
+    ]);
   };
 
   useEffect(() => {
@@ -370,6 +490,7 @@ const Schedule = () => {
 
         <div
           className={styles.resizer}
+          ref={resizerRef}
           onMouseDown={(e) => {
             setStartX(e.clientX);
             setStartWidthLeft(document.querySelector(`.${styles.schedule}`).offsetWidth);
@@ -377,126 +498,120 @@ const Schedule = () => {
             setResizing(true);
           }}
         ></div>
-        
-        <div className={styles.classSearch}>
-          <div className={styles.buttonContainer}>
-            <button onClick={captureScreenshot} className={styles.screenshotButton}>
-              <img src={ScreenshotIcon} alt="Screenshot" className={styles.screenshotIcon}/>
+
+        <div className={styles.functionContainer}>
+          <button onClick={captureScreenshot} className={styles.screenshotButton}>
+            <img src={ScreenshotIcon} alt="Screenshot" className={styles.screenshotIcon}/>
+            <span className={styles.tooltip}>Get a screenshot of schedule</span>
+          </button>
+          <button onClick={removeAllEvents} className={styles.trashButton}>
+            <img src={TrashIcon} alt="Remove All" className={styles.trashIcon}/>
+            <span className={styles.tooltip}>Clear schedule</span>
+          </button>
+          {returnVisible && (
+            <button onClick={handleReturn} className={styles.returnButton}>
+              <img src={ReturnIcon} alt="Return" className={styles.returnIcon}/>
+              <span className={styles.tooltip}>Return to search</span>
             </button>
-            <button id="toggleFilters" onClick={() => {
-              setSearchVisible(!searchVisible);
-              setFiltersVisible(!filtersVisible);
-              setEventFormVisible(false);
-            }}>Search</button>
+          )}
+        </div>
 
-            <button onClick={() => {
-              setAddedVisible(!addedVisible);
-              setSearchVisible(false);
-              setFiltersVisible(false);
-              setEventFormVisible(false);
-            }}>Added</button>
+        <div className={styles.classSearch}>
+          {!returnVisible && (
+            <div className={styles.buttonContainer}>
+              <button id="toggleFilters" onClick={() => {
+                setSearchVisible(true);
+                setFiltersVisible(!filtersVisible);
+                setEventFormVisible(false);
+              }}>Search</button>
 
-            <button id="addEventsButton" onClick={() => {
-              setEventFormVisible(!eventFormVisible);
-              setFiltersVisible(false);
-              setSearchVisible(false);
-              setAddedVisible(false);
-            }}>Custom</button>
-          </div>
+              <button onClick={() => {
+                setAddedVisible(!addedVisible);
+                setSearchVisible(false);
+                setFiltersVisible(false);
+                setEventFormVisible(false);
+              }}>Added</button>
 
-          {filtersVisible && (
+              <button id="addEventsButton" onClick={() => {
+                setEventFormVisible(!eventFormVisible);
+                setFiltersVisible(false);
+                setSearchVisible(false);
+                setAddedVisible(false);
+              }}>Custom</button>
+            </div>
+          )}
+
+          {searchVisible && (
             <div id="filters" className={styles.filters}>
+              <div className={styles.filterLabel}>Term</div>
               <div className={styles.filterItem}>
-                <label htmlFor="termDropdown">Term</label>
-                <select id="termDropdown">
+                <select id="termDropdown" onChange={(e) => setSelectedTerm(e.target.value)} className={styles.fullWidth}>
+                  <option>Select a term</option>
                   {terms.map((term) => (
                     <option key={term.id} value={term.id}>{term.name}</option>
                   ))}
                 </select>
               </div>
 
+              <div className={styles.filterLabel}>Department</div>
+              <div className={styles.filterContainer}>
+                <div className={styles.filterItem}>
+                  <select id="departmentDropdown" onChange={(e) => setSelectedDepartment(e.target.value)} className={styles.fullWidth}>
+                    <option>Select a department</option>
+                    {departments.map((dept) => (
+                      <option key={dept.id} value={dept.id}>{dept.name}</option>
+                    ))}
+                  </select>
+                </div>
+              </div>
               <div className={styles.filterItem}>
-                <label htmlFor="departmentDropdown">Department</label>
-                <select id="departmentDropdown">
-                  {departments.map((dept) => (
-                    <option key={dept.id} value={dept.id}>{dept.name}</option>
-                  ))}
-                </select>
+                <input
+                  type="text"
+                  id="courseNumber"
+                  className={styles.fullWidth}
+                  placeholder="Course Number(s)"
+                  value={searchQuery}
+                  onChange={handleSearchInputChange}
+                />
               </div>
 
-              <div className={styles.filterItem}>
-                <label htmlFor="levelDropdown">Course Level</label>
-                <select id="levelDropdown">
-                  {courseLevels.map((level) => (
-                    <option key={level.id} value={level.id}>{level.name}</option>
-                  ))}
-                </select>
+              <div className={styles.searchButtonContainer}>
+                <button onClick={handleSearch} className={styles.courseSearchButton}>
+                  Search
+                </button>
               </div>
-
-              <div className={styles.filterItem}>
-                <label htmlFor="geDropdown">General Education</label>
-                <select id="geDropdown">
-                  {geList.map((ge) => (
-                    <option key={ge.id} value={ge.id}>{ge.name}</option>
-                  ))}
-                </select>
-              </div>
-
-              <button id="searchCourses" style={{ display: 'none' }}>Search Courses</button>
             </div>
           )}
 
-          {searchVisible && (
-            <div className={styles.searchContainer}>
-              <label htmlFor="searchDropdown">Search</label>
-              <input
-                type="text"
-                className={styles.searchInput}
-                placeholder="Search course"
-                value={searchQuery}
-                onChange={handleSearchInputChange}
-              />
-              {filteredCourses.length > 0 && (
-                <ul className={styles.dropdown}>
-                  {filteredCourses.map(course => (
-                    <li key={course.id} onClick={() => handleSearch(course.id)}>
-                      {course.title}
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </div>
-          )}
-
-          {searchResults.length > 0 && (
-            <table className={styles.searchResultsTable}>
+          {selectedCourse && (
+            <table className={styles.courseTable}>
               <thead>
                 <tr>
-                  <th>ID</th>
-                  <th>Section Code</th>
-                  <th>Section Type</th>
-                  <th>Instructor</th>
-                  <th>Days</th>
-                  <th>Start Time</th>
-                  <th>End Time</th>
-                  <th>Building</th>
-                  <th>Room</th>
-                  <th>Max Capacity</th>
+                  <th colSpan="3" style={{ textAlign: 'center' }}>
+                    {selectedCourse.department} {selectedCourse.id} - {selectedCourse.title}
+                  </th>
+                </tr>
+                <tr>
+                  <th></th>
+                  <th>Code</th>
+                  <th>Type</th>
+                  <th>Times</th>
                 </tr>
               </thead>
               <tbody>
-                {searchResults.map((section, index) => (
+                {searchResults.map((offering, index) => (
                   <tr key={index}>
-                    <td>{section.id}</td>
-                    <td>{section.section_code}</td>
-                    <td>{section.section_type}</td>
-                    <td>{section.instructor}</td>
-                    <td>{section.days}</td>
-                    <td>{section.start_time}</td>
-                    <td>{section.end_time}</td>
-                    <td>{section.building}</td>
-                    <td>{section.room}</td>
-                    <td>{section.max_capacity}</td>
+                    <td style={{ textAlign: 'center' }}>
+                      <img
+                        src={PlusIcon}
+                        alt="Add"
+                        className={`${styles.plusIcon} ${styles.plusIconHover}`}
+                        onClick={() => handlePlusClick(offering, selectedCourse)}
+                      />
+                    </td>
+                    <td style={{ textAlign: 'center' }}>{offering.section.code}</td>
+                    <td style={{ textAlign: 'center' }}>{offering.section.type}</td>
+                    <td style={{ textAlign: 'center' }}>{offering.meetings.map(meeting => `${meeting.days} ${meeting.time}`).join(', ')}</td>
                   </tr>
                 ))}
               </tbody>
@@ -540,29 +655,43 @@ const Schedule = () => {
           )}
 
           {addedVisible && (
-            <table className={styles.addedEventsTable}>
-              <thead>
-                <tr>
-                  <th>Event Name</th>
-                  <th>Times</th>
-                  <th></th>
-                </tr>
-              </thead>
-              <tbody>
-                {events.map((event, index) => (
-                  <tr key={index} style={{ backgroundColor: event.color }}>
-                    <td>{event.name}</td>
-                    <td>{`${event.days.join(', ')} ${event.startTime} - ${event.endTime}`}</td>
-                    <td>
-                      <button onClick={() => removeEvent(event)}>Remove</button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+            <>
+              {addedCourses.reduce((acc, { offering, course }) => {
+                const existingCourse = acc.find(item => item.course.id === course.id);
+                if (existingCourse) {
+                  existingCourse.offerings.push(offering);
+                } else {
+                  acc.push({ course, offerings: [offering] });
+                }
+                return acc;
+              }, []).map(({ course, offerings }, index) => (
+                <table key={index} className={styles.addedEventsTable}>
+                  <thead>
+                    <tr>
+                      <th colSpan="3" style={{ textAlign: 'left' }}>
+                        {course.department} {course.id} - {course.title}
+                      </th>
+                    </tr>
+                    <tr>
+                      <th>Code</th>
+                      <th>Type</th>
+                      <th>Times</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {offerings.map((offering, index) => (
+                      <tr key={index}>
+                        <td style={{ textAlign: 'center' }}>{offering.section.code}</td>
+                        <td style={{ textAlign: 'center' }}>{offering.section.type}</td>
+                        <td style={{ textAlign: 'center' }}>{offering.meetings.map(meeting => `${meeting.days} ${meeting.time}`).join(', ')}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              ))}
+            </>
           )}
         </div>
-
       </div>
       <Footer />
     </div>

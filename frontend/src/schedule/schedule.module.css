@@ -34,7 +34,7 @@
 .schedule th, .schedule td {
     border: 1px solid #ccc;
     min-width: 100px;
-    height: 20px;
+    height: 20px; /* Height of each box is now 20px */
     text-align: center;
     vertical-align: middle;
 }
@@ -60,36 +60,31 @@
 }
 
 .resizer {
-    margin-bottom :5px;
+    margin-bottom: 5px;
     flex: none;
     width: 5px;
     background: rgb(0,100,164);
     cursor: ew-resize;
     margin-top: 5px;
-    z-index: 10;
+    z-index: 1;
 }
 
 .resizer:hover {
     background-color: #0056b3;
 }
 
-.classSearch {
-    flex-grow: 1;
-    overflow-x: auto; 
-    min-width: 200px;
-    margin-bottom: 5px;
-    margin-top: 5px;
-    padding: 0 5px;
-}
-
-.iconContainer {
+.functionContainer {
     display: flex;
-    justify-content: flex-end;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
     padding: 5px;
+    height: 100%;
+    position: relative;
+    z-index: 2; /* Ensure it is above the resizer */
 }
 
-
-.screenshotButton {
+.screenshotButton, .trashButton, .returnButton {
     background: none;
     border: none;
     cursor: pointer;
@@ -99,13 +94,53 @@
     justify-content: center;
     align-items: center;
     border-radius: 50%;
-    width: 40px;
-    height: 40px;
+    width: 40px; /* Adjust to match the icon size */
+    height: 40px; /* Adjust to match the icon size */
+    margin: 5px 0; /* Add some space between the buttons */
+    position: relative;
+    transition: background-color 0.3s;
 }
 
-.screenshotIcon {
+.screenshotButton:hover, .trashButton:hover, .returnButton:hover, .plusIconHover:hover {
+    background-color: rgba(0, 0, 0, 0.1); /* Slightly darken on hover */
+}
+
+.screenshotIcon, .trashIcon, .returnIcon, .plusIcon {
     width: 24px;
     height: 24px;
+}
+
+.tooltip {
+    visibility: hidden;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px;
+    position: absolute;
+    z-index: 3; /* Ensure it is in front of everything else */
+    bottom: -35px;
+    left: 50%;
+    transform: translateX(-50%);
+    opacity: 0;
+    transition: opacity 0.3s;
+    white-space: nowrap;
+    font-size: 12px; /* Adjust this value to make the text smaller */
+}
+
+.screenshotButton:hover .tooltip, .trashButton:hover .tooltip, .returnButton:hover .tooltip, .plusIconHover:hover .tooltip {
+    visibility: visible;
+    opacity: 1;
+}
+
+.classSearch {
+    flex-grow: 1;
+    overflow-x: auto; 
+    min-width: 200px;
+    margin-bottom: 5px;
+    margin-top: 5px;
+    padding: 0 5px;
+    width: 100%; /* Ensure the classSearch container maintains the same width */
 }
 
 .buttonContainer {
@@ -114,6 +149,7 @@
     border: 1px solid #f4f4f4;
     padding: 5px;
     background-color: #f3f3f3;
+    margin-top: 5px; /* Add some space between the icon container and button container */
 }
 
 .toggleFilters, .buttonContainer button {
@@ -135,59 +171,83 @@
 .filters {
     display: flex;
     flex-direction: column;
-}
-
-/* .filterItem {
-    margin-bottom: 10px;
-} */
-
-.filterItem select {
-    padding: 10px;
-    margin-top: 5px;
-    width: calc(100% - 20px);
-    cursor: pointer;
-    outline: 1px solid black;
-    color: black;
+    align-items: center; /* Center align items */
     width: 100%;
-    height: auto;
-    border: 1px solid #ccc;
 }
 
-.results {
-    margin-top: 20px;
+.filterLabel {
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #333;
+    text-align: left;
+    width: 100%;
 }
 
-.dropdown {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    border: 1px solid #ccc;
-    max-height: 300px;
-    overflow-y: auto;
-}
-
-.dropdown li {
-    padding: 5px;
-    cursor: pointer;
-}
-
-.dropdown li:hover {
-    background-color: #f0f0f0;
-}
-
-.eventForm .days-container {
-    width: calc(100% - 20px);
+.filterContainer {
     display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    padding: 5px 0;
+    justify-content: space-between;
+    margin-bottom: 15px; /* Add space between department bar and course search button */
+    width: 100%;
 }
 
-.filterItem select, .eventForm input[type='text'], .eventForm input[type='time'], .eventForm button, .searchContainer input[type='text']  {
+.filterItem select, .filterItem input[type='text'], .eventForm input[type='text'], .eventForm input[type='time'], .eventForm button, .searchContainer input[type='text']  {
     width: calc(100% - 20px);
     padding: 8px;
     margin-bottom: 5px;
     box-sizing: border-box;
+    height: 40px; /* Set height to match */
+    border: none;
+    border-bottom: 1px solid #ccc; /* Add bottom border */
+    background-color: transparent;
+    color: #333; /* Match text color of course number input */
+}
+
+.filterItem select {
+    border-radius: 4px;
+    background-color: white;
+}
+
+.filterItem {
+    width: calc(100% - 10px); /* Adjust width to be the same for all */
+    padding: 0 5px;
+}
+
+.fullWidth {
+    width: calc(100% - 10px); /* Adjust width to be the same as classSearch container */
+}
+
+.partialWidth {
+    width: calc(100% - 140px); /* Adjust width to be classSearch container width minus course number input box */
+}
+
+.searchButtonContainer {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+.courseSearchButton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-top: 20px; /* Add space between the button and above elements */
+}
+
+.courseSearchButton:hover {
+    background-color: #0056b3;
+}
+
+.searchButtonIcon {
+    margin-left: 10px;
+    width: 24px;
+    height: 24px;
 }
 
 .eventForm button {
@@ -207,6 +267,9 @@
 .eventForm label {
     display: block;
     margin-bottom: 5px;
+    font-weight: bold; /* Match the font weight of "Term" */
+    color: #333; /* Match the color of "Term" */
+    font-size: 14px; /* Match the font size of "Term" */
 }
 
 .eventForm select[multiple] {
@@ -216,8 +279,10 @@
 }
 
 .eventForm .daysContainer {
-    display: inline-block;
-    margin-right: 10px;
+    display: flex;
+    justify-content: center; /* Center the buttons */
+    gap: 10px; /* Add space between the buttons */
+    margin-bottom: 10px; /* Add space below the buttons */
 }
 
 .eventContent {
@@ -226,7 +291,7 @@
     left: 0;
     right: 0;
     bottom: 0;
-    color: white;
+    color: black; /* Change text color to black */
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -235,20 +300,25 @@
     padding: 5px;
     box-sizing: border-box;
     z-index: 2;
+    font-size: 12px; /* Smaller font size for text */
 }
 
 .eventContent .close-icon {
     cursor: pointer;
-    top: 5px;
-    right: 5px;
+    top: 0px;
+    right: 0px;
+    height: 10px;
+    width: 10px;
 }
 
 .closeIcon {
     filter: brightness(70%);
     position: absolute;
-    top: 5px;
-    right: 5px;
+    top: 0px;
+    right: 0px;
     cursor: pointer;
+    height: 10px;
+    width: 10px;
 }
 
 .closeIcon:hover {
@@ -267,6 +337,10 @@
     text-align: center;
     border-left: 1px solid #ccc;
     transition: background-color 0.3s;
+}
+
+.day:first-child {
+    margin-left: 0; /* Remove space in front of the first button */
 }
 
 .day:last-child {
@@ -288,6 +362,11 @@
     cursor: pointer;
     border: 1px solid #ccc;
     border-radius: 4px;
+    flex: 1; /* Ensure equal width */
+    text-align: center; /* Center the text */
+    align-items: center; /* Center the text vertically */
+    justify-content: center; /* Center the text horizontally */
+    display: flex; /* Center the text horizontally */
 }
 
 .day.selected {
@@ -299,10 +378,22 @@
     width: 100%;
     border-collapse: collapse;
     margin-top: 20px;
-  }
-  
+}
+
 .addedEventsTable th,
 .addedEventsTable td {
     padding: 8px;
-    text-align: left;
+    text-align: center; /* Center text in all table cells */
+}
+
+.courseTable {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.courseTable th,
+.courseTable td {
+    padding: 8px;
+    text-align: center; /* Center text in all table cells */
 }
