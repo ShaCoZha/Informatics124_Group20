@@ -5,9 +5,10 @@ Functionalities:
   1. Register and login
   2. Personalize and edit profiles
   3. Schedule Adding / Editing
-  4. Schedule exporting
-  5. Course filtering
-  6. Personalized event
-  7. Course chatrooms
-  8. Private chat
-  9. Providing feedback
+  4. Course filtering and selecting
+  5. Generate added event table
+  6. Schedule exporting
+  7. Personalized event
+  8. Course chatrooms
+  9. Private chat
+  10. Providing feedback
