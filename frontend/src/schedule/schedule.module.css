@@ -101,11 +101,11 @@
     transition: background-color 0.3s;
 }
 
-.screenshotButton:hover, .trashButton:hover, .returnButton:hover, .plusIconHover:hover {
+.screenshotButton:hover, .trashButton:hover, .returnButton:hover, .plusIconHover:hover, .trashIconHover:hover {
     background-color: rgba(0, 0, 0, 0.1); /* Slightly darken on hover */
 }
 
-.screenshotIcon, .trashIcon, .returnIcon, .plusIcon {
+.screenshotIcon, .trashIcon, .returnIcon, .plusIcon, .trashIcon1 {
     width: 24px;
     height: 24px;
 }
@@ -128,7 +128,7 @@
     font-size: 12px; /* Adjust this value to make the text smaller */
 }
 
-.screenshotButton:hover .tooltip, .trashButton:hover .tooltip, .returnButton:hover .tooltip, .plusIconHover:hover .tooltip {
+.screenshotButton:hover .tooltip, .trashButton:hover .tooltip, .returnButton:hover .tooltip, .plusIconHover:hover .tooltip, .trashIconHover:hover .tooltip {
     visibility: visible;
     opacity: 1;
 }
@@ -305,20 +305,16 @@
 
 .eventContent .close-icon {
     cursor: pointer;
-    top: 0px;
-    right: 0px;
-    height: 10px;
-    width: 10px;
+    top: 5px;
+    right: 5px;
 }
 
 .closeIcon {
     filter: brightness(70%);
     position: absolute;
-    top: 0px;
-    right: 0px;
+    top: 5px;
+    right: 5px;
     cursor: pointer;
-    height: 10px;
-    width: 10px;
 }
 
 .closeIcon:hover {
@@ -396,4 +392,28 @@
 .courseTable td {
     padding: 8px;
     text-align: center; /* Center text in all table cells */
+}
+
+.trashIcon1 {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.popup {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: red;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 16px;
+    z-index: 1000;
 }

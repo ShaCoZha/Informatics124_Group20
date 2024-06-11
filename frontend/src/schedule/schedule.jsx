@@ -6,8 +6,8 @@ import Footer from '../footer/footer.jsx';
 import ScreenshotIcon from './screenshot_icon.svg';
 import TrashIcon from './trash_icon.svg';
 import PlusIcon from './plus_icon.svg';
+import TrashIcon1 from './trash_icon1.svg';
 import ReturnIcon from './return_icon.svg';
-import CloseIcon from './close_icon.svg'; // Import the close icon
 
 const Schedule = () => {
   const [filtersVisible, setFiltersVisible] = useState(false);
@@ -30,6 +30,7 @@ const Schedule = () => {
   const [selectedDepartment, setSelectedDepartment] = useState("Select a department");
   const [selectedCourse, setSelectedCourse] = useState(null);
   const [addedCourses, setAddedCourses] = useState([]);
+  const [showPopup, setShowPopup] = useState(false);
   const scheduleRef = useRef(null);
   const resizerRef = useRef(null);
   const boxHeight = 20;
@@ -105,8 +106,7 @@ const Schedule = () => {
     const startTime = document.getElementById('eventStartTime').value;
     const endTime = document.getElementById('eventEndTime').value;
     const selectedDays = Array.from(document.querySelectorAll(`.${styles.day}.${styles.selected}`)).map(day => day.textContent.trim());
-    const color = getRandomColor();
-    addEventToSchedule(name, `${startTime}-${endTime}`, selectedDays, false, '', color);
+    addEventToSchedule(name, `${startTime}-${endTime}`, selectedDays);
   };
 
   const convertTime12to24 = (time) => {
@@ -158,8 +158,9 @@ const Schedule = () => {
     return parsedDays;
   };
 
-  const addEventToSchedule = (name, time, days, fromCourseTable = false, department = '', color) => {
+  const addEventToSchedule = (name, time, days, fromCourseTable = false, department = '') => {
     const scheduleTable = document.querySelector(`.${styles.schedule} table`);
+    const color = getRandomColor();
 
     let parsedDays = days;
     let start24HourTime = time.split('-')[0].trim();
@@ -194,14 +195,9 @@ const Schedule = () => {
           <div style="display: flex; justify-content: space-between; width: 100%; font-size: 12px; color: black;">
             <strong style="text-align: left;">${name}</strong>
             <strong style="text-align: right;">${sectionType}</strong>
-            <img src=${CloseIcon} class="${styles.closeIcon}" alt="close" />
           </div>
           <div style="font-size: 10px; color: black;">${start24HourTime} - ${end24HourTime}</div>
         `;
-
-        eventDiv.querySelector(`.${styles.closeIcon}`).addEventListener('click', () => {
-          removeEventsByColor(color);
-        });
 
         cell.innerHTML = '';
         cell.appendChild(eventDiv);
@@ -212,7 +208,6 @@ const Schedule = () => {
           const existingEventIndex = prevEvents.findIndex(event => event.name === name);
           if (existingEventIndex !== -1) {
             prevEvents[existingEventIndex].elements.push(eventDiv);
-            prevEvents[existingEventIndex].color = color;
             return [...prevEvents];
           } else {
             return [
@@ -239,23 +234,9 @@ const Schedule = () => {
     });
   };
 
-  const removeEventsByColor = (color) => {
-    setEvents((prevEvents) => {
-      const updatedEvents = prevEvents.filter((event) => {
-        if (event.color === color) {
-          event.elements.forEach(element => element.remove());
-          return false;
-        }
-        return true;
-      });
-      return updatedEvents;
-    });
-  };
-
   const removeAllEvents = () => {
     setEvents((prevEvents) => {
       prevEvents.forEach(event => event.elements.forEach(element => element.remove()));
-      setAddedCourses([]);
       return [];
     });
   };
@@ -411,6 +392,13 @@ const Schedule = () => {
   };
 
   const handleSearch = () => {
+    if (selectedTerm === 'Select a term' || selectedDepartment === 'Select a department' || !searchQuery) {
+      setShowPopup(true);
+      setTimeout(() => {
+        setShowPopup(false);
+      }, 3000);
+      return;
+    }
     fetchCourseDetails();
     setSearchQuery("");
     setFiltersVisible(false);
@@ -442,19 +430,24 @@ const Schedule = () => {
   };
 
   const handlePlusClick = (offering, course) => {
-    const color = getRandomColor();
     addEventToSchedule(
       `${course.id} ${offering.section.type}`,
       offering.meetings[0]?.time,
       offering.meetings[0]?.days,
       true,
-      course.department,
-      color
+      course.department
     );
     setAddedCourses((prev) => [
       ...prev,
-      { offering, course, color }
+      { offering, course }
     ]);
+  };
+
+  const handleTrashClick = ({ offering, course }) => {
+    removeEvent({ name: `${course.id} ${offering.section.type}` });
+    setAddedCourses((prev) =>
+      prev.filter((c) => c.offering.section.code !== offering.section.code)
+    );
   };
 
   useEffect(() => {
@@ -587,7 +580,7 @@ const Schedule = () => {
             <table className={styles.courseTable}>
               <thead>
                 <tr>
-                  <th colSpan="3" style={{ textAlign: 'center' }}>
+                  <th colSpan="4" style={{ textAlign: 'center' }}>
                     {selectedCourse.department} {selectedCourse.id} - {selectedCourse.title}
                   </th>
                 </tr>
@@ -656,6 +649,41 @@ const Schedule = () => {
 
           {addedVisible && (
             <>
+              {events.map((event, index) => (
+                <table key={index} className={styles.addedEventsTable}>
+                  <thead>
+                    <tr>
+                      <th colSpan="4" style={{ textAlign: 'center' }}>
+                        {event.name}
+                      </th>
+                    </tr>
+                    <tr>
+                      <th></th>
+                      <th>Code</th>
+                      <th>Type</th>
+                      <th>Times</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td style={{ textAlign: 'center' }}>
+                        <img
+                          src={TrashIcon1}
+                          alt="Remove"
+                          className={`${styles.trashIcon1} ${styles.trashIconHover}`}
+                          onClick={() => removeEvent(event)}
+                        />
+                      </td>
+                      <td style={{ textAlign: 'center' }}>{event.elements[0]?.dataset.sectionCode || ''}</td>
+                      <td style={{ textAlign: 'center' }}>{event.type}</td>
+                      <td style={{ textAlign: 'center' }}>
+                        {event.days.join(', ')} {event.startTime} - {event.endTime}
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              ))}
+
               {addedCourses.reduce((acc, { offering, course }) => {
                 const existingCourse = acc.find(item => item.course.id === course.id);
                 if (existingCourse) {
@@ -668,11 +696,12 @@ const Schedule = () => {
                 <table key={index} className={styles.addedEventsTable}>
                   <thead>
                     <tr>
-                      <th colSpan="3" style={{ textAlign: 'left' }}>
+                      <th colSpan="4" style={{ textAlign: 'center' }}>
                         {course.department} {course.id} - {course.title}
                       </th>
                     </tr>
                     <tr>
+                      <th></th>
                       <th>Code</th>
                       <th>Type</th>
                       <th>Times</th>
@@ -681,6 +710,14 @@ const Schedule = () => {
                   <tbody>
                     {offerings.map((offering, index) => (
                       <tr key={index}>
+                        <td style={{ textAlign: 'center' }}>
+                          <img
+                            src={TrashIcon1}
+                            alt="Remove"
+                            className={`${styles.trashIcon1} ${styles.trashIconHover}`}
+                            onClick={() => handleTrashClick({ offering, course })}
+                          />
+                        </td>
                         <td style={{ textAlign: 'center' }}>{offering.section.code}</td>
                         <td style={{ textAlign: 'center' }}>{offering.section.type}</td>
                         <td style={{ textAlign: 'center' }}>{offering.meetings.map(meeting => `${meeting.days} ${meeting.time}`).join(', ')}</td>
@@ -694,6 +731,11 @@ const Schedule = () => {
         </div>
       </div>
       <Footer />
+      {showPopup && (
+        <div className={styles.popup}>
+          Please provide all of the following: Term, Department, and Course Number
+        </div>
+      )}
     </div>
   );
 };
