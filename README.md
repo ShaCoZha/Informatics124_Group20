@@ -1,6 +1,6 @@
 To run front end In Informatics124_Group20/frontend, do "npm install" && "npm run dev" <br />
 To run back end In Informatics124_Group20/backend, do "npm install" && "npm run devStart"
-Video Link:
+Video Link: https://youtu.be/20-GQ3nWO6U
 Functionalities:
   1. Register and login
   2. Personalize and edit profiles
